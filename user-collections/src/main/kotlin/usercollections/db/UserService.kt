@@ -59,7 +59,7 @@ class UserService(
             throw IllegalStateException("Card service is not initialized")
         }
 
-        if (!tripService.cardCollection.any { it.cardId == tripId }) {
+        if (!tripService.tripCollection.any { it.tripId == tripId }) {
             throw IllegalArgumentException("Invalid tripId: $tripId")
         }
     }
@@ -133,8 +133,8 @@ class UserService(
         val ids = mutableListOf<String>()
 
         selection.forEach {
-            addCard(user, it.cardId)
-            ids.add(it.cardId)
+            addCard(user, it.tripId)
+            ids.add(it.tripId)
         }
 
         return ids

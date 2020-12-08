@@ -31,10 +31,10 @@ class TripService(
     protected var collection: Collection? = null
 
     @Value("\${cardServiceAddress}")
-    private lateinit var cardServiceAddress: String
+    private lateinit var tripServiceAddress: String
 
-    val cardCollection : List<Trip>
-        get() = collection?.cards ?: listOf()
+    val tripCollection : List<Trip>
+        get() = collection?.trips ?: listOf()
 
     private val lock = Any()
 
@@ -47,20 +47,20 @@ class TripService(
         cb = circuitBreakerFactory.create("circuitBreakerToCards")
 
         synchronized(lock){
-            if(cardCollection.isNotEmpty()){
+            if(tripCollection.isNotEmpty()){
                 return
             }
             fetchData()
         }
     }
 
-    fun isInitialized() = cardCollection.isNotEmpty()
+    fun isInitialized() = tripCollection.isNotEmpty()
 
     protected fun fetchData(){
 
         val version = "v1_000"
         val uri = UriComponentsBuilder
-                .fromUriString("http://${cardServiceAddress.trim()}/api/cards/collection_$version")
+                .fromUriString("http://${tripServiceAddress.trim()}/api/cards/collection_$version")
                 .build().toUri()
 
         val response = cb.run(
@@ -72,14 +72,14 @@ class TripService(
                             object : ParameterizedTypeReference<WrappedResponse<CollectionDto>>() {})
                 },
                 { e ->
-                    log.error("Failed to fetch data from Card Service: ${e.message}")
+                    log.error("Failed to fetch data from Trip Service: ${e.message}")
                     null
                 }
         ) ?: return
 
 
         if (response.statusCodeValue != 200) {
-            log.error("Error in fetching data from Card Service. Status ${response.statusCodeValue}." +
+            log.error("Error in fetching data from Trip Service. Status ${response.statusCodeValue}." +
                     "Message: " + response.body.message)
         }
 
@@ -103,18 +103,18 @@ class TripService(
 
     fun millValue(cardId: String) : Int {
         verifyCollection()
-        val card : Trip = cardCollection.find { it.cardId  == cardId} ?:
+        val card : Trip = tripCollection.find { it.tripId  == cardId} ?:
         throw IllegalArgumentException("Invalid cardId $cardId")
 
         return collection!!.millValues[card.rarity]!!
     }
 
-    fun price(cardId: String) : Int {
+    fun price(tripId: String) : Int {
         verifyCollection()
-        val card : Trip = cardCollection.find { it.cardId  == cardId} ?:
-        throw IllegalArgumentException("Invalid cardId $cardId")
+        val trip : Trip = tripCollection.find { it.tripId  == tripId} ?:
+        throw IllegalArgumentException("Invalid cardId $tripId")
 
-        return collection!!.prices[card.rarity]!!
+        return collection!!.prices[trip.rarity]!!
     }
 
     fun getRandomSelection(n: Int) : List<Trip>{

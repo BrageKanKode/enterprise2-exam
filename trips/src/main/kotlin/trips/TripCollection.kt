@@ -31,7 +31,7 @@ object TripCollection {
 
     private fun addCards(dto: CollectionDto) {
 
-        dto.cards.run {
+        dto.trips.run {
             add(TripDto("c000", "Green Mold", "lore ipsum", BRONZE, "035-monster.svg"))
             add(TripDto("c001", "Opera Singer", "lore ipsum", BRONZE, "056-monster.svg"))
             add(TripDto("c002", "Not Stitch", "lore ipsum", BRONZE, "070-monster.svg"))
@@ -54,8 +54,8 @@ object TripCollection {
             add(TripDto("c019", "Bengt The Destroyer", "lore ipsum", PINK_DIAMOND, "051-monster.svg"))
         }
 
-        assert(dto.cards.size == dto.cards.map { it.tripId }.toSet().size)
-        assert(dto.cards.size == dto.cards.map { it.place }.toSet().size)
-        assert(dto.cards.size == dto.cards.map { it.price }.toSet().size)
+        assert(dto.trips.size == dto.trips.map { it.tripId }.toSet().size)
+        assert(dto.trips.size == dto.trips.map { it.place }.toSet().size)
+        assert(dto.trips.size == dto.trips.map { it.price }.toSet().size)
     }
 }

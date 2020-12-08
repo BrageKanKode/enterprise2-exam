@@ -71,23 +71,23 @@ class RestAPI(
             return RestResponseFactory.payload(200, PatchResultDto().apply { cardIdsInOpenedPack.addAll(ids) })
         }
 
-        val cardId = dto.cardId
-                ?: return RestResponseFactory.userFailure("Missing card id")
+        val tripId = dto.cardId
+                ?: return RestResponseFactory.userFailure("Missing trip id")
 
         if(dto.command == Command.BUY_CARD){
             try{
-                userService.buyTrip(userId, cardId)
+                userService.buyTrip(userId, tripId)
             } catch (e: IllegalArgumentException){
-                return RestResponseFactory.userFailure(e.message ?: "Failed to buy card $cardId")
+                return RestResponseFactory.userFailure(e.message ?: "Failed to buy trip $tripId")
             }
             return RestResponseFactory.payload(200, PatchResultDto())
         }
 
         if(dto.command == Command.MILL_CARD){
             try{
-                userService.millCard(userId, cardId)
+                userService.millCard(userId, tripId)
             } catch (e: IllegalArgumentException){
-                return RestResponseFactory.userFailure(e.message ?: "Failed to mill card $cardId")
+                return RestResponseFactory.userFailure(e.message ?: "Failed to mill trip $tripId")
             }
             return RestResponseFactory.payload(200, PatchResultDto())
         }

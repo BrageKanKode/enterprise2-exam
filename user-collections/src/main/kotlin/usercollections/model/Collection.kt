@@ -7,7 +7,7 @@ import kotlin.math.abs
 
 data class Collection(
 
-        val cards : List<Trip>,
+        val trips : List<Trip>,
 
         val prices: Map<Rarity, Int>,
 
@@ -17,16 +17,16 @@ data class Collection(
 ){
 
     constructor(dto: CollectionDto) : this(
-            dto.cards.map { Trip(it) },
+            dto.trips.map { Trip(it) },
             dto.prices.toMap(),
             dto.millValues.toMap(),
             dto.rarityProbabilities.toMap()
     )
 
-    val cardsByRarity : Map<Rarity, List<Trip>> = cards.groupBy { it.rarity }
+    val cardsByRarity : Map<Rarity, List<Trip>> = trips.groupBy { it.rarity }
 
     init{
-        if(cards.isEmpty()){
+        if(trips.isEmpty()){
             throw IllegalArgumentException("No cards")
         }
         Rarity.values().forEach {

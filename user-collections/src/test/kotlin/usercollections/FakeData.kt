@@ -18,7 +18,7 @@ object FakeData {
         dto.prices.forEach { dto.millValues[it.key] = it.value / 4 }
         dto.prices.keys.forEach { dto.rarityProbabilities[it] = 0.25 }
 
-        dto.cards.run {
+        dto.trips.run {
             add(TripDto(tripId = "c00", rarity = BRONZE))
             add(TripDto(tripId = "c01", rarity = BRONZE))
             add(TripDto(tripId = "c02", rarity = BRONZE))

@@ -4,7 +4,7 @@ import trips.dto.Rarity
 import trips.dto.TripDto
 
 data class Trip(
-        val cardId : String,
+        val tripId : String,
         val rarity: Rarity
 ){
 
