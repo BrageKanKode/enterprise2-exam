@@ -9,6 +9,6 @@ data class Trip(
 ){
 
     constructor(dto: TripDto): this(
-            dto.cardId ?: throw IllegalArgumentException("Null cardId"),
+            dto.tripId ?: throw IllegalArgumentException("Null cardId"),
             dto.rarity ?: throw IllegalArgumentException("Null rarity"))
 }

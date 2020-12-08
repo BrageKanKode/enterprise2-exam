@@ -19,16 +19,16 @@ object FakeData {
         dto.prices.keys.forEach { dto.rarityProbabilities[it] = 0.25 }
 
         dto.cards.run {
-            add(TripDto(cardId = "c00", rarity = BRONZE))
-            add(TripDto(cardId = "c01", rarity = BRONZE))
-            add(TripDto(cardId = "c02", rarity = BRONZE))
-            add(TripDto(cardId = "c03", rarity = BRONZE))
-            add(TripDto(cardId = "c04", rarity = SILVER))
-            add(TripDto(cardId = "c05", rarity = SILVER))
-            add(TripDto(cardId = "c06", rarity = SILVER))
-            add(TripDto(cardId = "c07", rarity = GOLD))
-            add(TripDto(cardId = "c08", rarity = GOLD))
-            add(TripDto(cardId = "c09", rarity = PINK_DIAMOND))
+            add(TripDto(tripId = "c00", rarity = BRONZE))
+            add(TripDto(tripId = "c01", rarity = BRONZE))
+            add(TripDto(tripId = "c02", rarity = BRONZE))
+            add(TripDto(tripId = "c03", rarity = BRONZE))
+            add(TripDto(tripId = "c04", rarity = SILVER))
+            add(TripDto(tripId = "c05", rarity = SILVER))
+            add(TripDto(tripId = "c06", rarity = SILVER))
+            add(TripDto(tripId = "c07", rarity = GOLD))
+            add(TripDto(tripId = "c08", rarity = GOLD))
+            add(TripDto(tripId = "c09", rarity = PINK_DIAMOND))
         }
 
         return dto

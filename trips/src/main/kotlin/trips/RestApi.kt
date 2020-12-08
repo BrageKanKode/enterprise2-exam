@@ -2,26 +2,28 @@ package trips
 
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
+import io.swagger.annotations.ApiParam
 import org.springframework.http.CacheControl
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
+import rest.PageDto
 import rest.WrappedResponse
+import trips.db.UserStatsService
 import trips.dto.CollectionDto
+import trips.dto.UserStatsDto
 import java.net.URI
 import java.util.concurrent.TimeUnit
 
 @Api(value = "/api/cards", description = "Operation on the cards existing in the game")
 @RequestMapping(path = ["/api/cards"])
 @RestController
-class RestApi {
+class RestApi (private val statsService: UserStatsService) {
 
     companion object {
         const val LATEST = "v1_000"
     }
+
 
     @ApiOperation("Return info on all cards in the game")
     @GetMapping(
@@ -30,7 +32,7 @@ class RestApi {
     )
     fun getLatest() : ResponseEntity<WrappedResponse<CollectionDto>>{
 
-        val collection = CardCollection.get()
+        val collection = TripCollection.get()
 
         return ResponseEntity
                 .status(200)
@@ -51,25 +53,55 @@ class RestApi {
                 .build()
     }
 
-    @ApiOperation("Return the image for the specified card")
-    @GetMapping(
-            path = ["/imgs/{imgId}"],
-            produces = ["image/svg+xml"]
-    )
-    fun getImage(@PathVariable("imgId") imgId: String) : ResponseEntity<String>{
-        val folder = when{
-            imgId.run{ endsWith("-monster.svg") || endsWith("-cyclops.svg")
-                    || endsWith("-dragon.svg") || endsWith("-snake.svg")}
-            -> "/1236106-monsters"
-            else -> return ResponseEntity.status(400).build()
-        }
+    @ApiOperation("Return an iterable page of leaderboard results, starting from the top player")
+    @GetMapping
+    fun getAll(
+            @ApiParam("Id of player in the previous page")
+            @RequestParam("keysetId", required = false)
+            keysetId: String?,
+            //
+            @ApiParam("Score of the player in the previous page")
+            @RequestParam("keysetScore", required = false)
+            keysetScore: Int?): ResponseEntity<WrappedResponse<PageDto<UserStatsDto>>> {
 
-        val svg = javaClass.getResource("$folder/svg/$imgId")?.readText()
-                ?: return ResponseEntity.notFound().build()
+        val page = PageDto<UserStatsDto>()
+
+        val n = 10
+        val scores = DtoConverter.transform(statsService.getNextPage(n, keysetId, keysetScore))
+        page.list = scores
+
+        if (scores.size == n) {
+            val last = scores.last()
+            page.next = "/api/scores?keysetId=${last.userId}&keysetScore=${last.score}"
+        }
 
         return ResponseEntity
                 .status(200)
-                .cacheControl(CacheControl.maxAge(365, TimeUnit.DAYS).cachePublic())
-                .body(svg)
+                .cacheControl(CacheControl.maxAge(1, TimeUnit.MINUTES).cachePublic())
+                .body(WrappedResponse(200, page).validated())
     }
+
+//    @ApiOperation("Return the image for the specified card")
+//    @GetMapping(
+//            path = ["/imgs/{imgId}"],
+//            produces = ["image/svg+xml"]
+//    )
+//    fun getImage(@PathVariable("imgId") imgId: String) : ResponseEntity<String>{
+//        val folder = when{
+//            imgId.run{ endsWith("-monster.svg") || endsWith("-cyclops.svg")
+//                    || endsWith("-dragon.svg") || endsWith("-snake.svg")}
+//            -> "/1236106-monsters"
+//            else -> return ResponseEntity.status(400).build()
+//        }
+//
+//        val svg = javaClass.getResource("$folder/svg/$imgId")?.readText()
+//                ?: return ResponseEntity.notFound().build()
+//
+//        return ResponseEntity
+//                .status(200)
+//                .cacheControl(CacheControl.maxAge(365, TimeUnit.DAYS).cachePublic())
+//                .body(svg)
+//    }
+
+
 }

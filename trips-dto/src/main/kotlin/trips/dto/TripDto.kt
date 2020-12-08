@@ -2,13 +2,13 @@ package trips.dto
 
 class TripDto(
 
-        var cardId: String? = null,
+        var tripId: String? = null,
 
-        var name: String? = null,
+        var place: String? = null,
 
-        var description: String? = null,
+        var duration: String? = null,
 
         var rarity: Rarity? = null,
 
-        var imageId: String? = null
+        var price: String? = null
 )

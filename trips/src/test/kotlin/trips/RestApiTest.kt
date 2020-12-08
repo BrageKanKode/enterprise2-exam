@@ -28,17 +28,6 @@ internal class RestApiTest{
         RestAssured.enableLoggingOfRequestAndResponseIfValidationFails()
     }
 
-
-//    @Test
-//    fun testGetImg(){
-//
-//        given().get("/api/cards/imgs/001-monster.svg")
-//                .then()
-//                .statusCode(200)
-//                .contentType("image/svg+xml")
-//                .header("cache-control", `is`(notNullValue()))
-//    }
-
     @Test
     fun testGetCollection(){
 

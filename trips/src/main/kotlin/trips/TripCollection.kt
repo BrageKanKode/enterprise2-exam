@@ -4,7 +4,7 @@ import trips.dto.CollectionDto
 import trips.dto.Rarity.*
 import trips.dto.TripDto
 
-object CardCollection {
+object TripCollection {
 
     fun get() : CollectionDto {
         val dto = CollectionDto()
@@ -54,8 +54,8 @@ object CardCollection {
             add(TripDto("c019", "Bengt The Destroyer", "lore ipsum", PINK_DIAMOND, "051-monster.svg"))
         }
 
-        assert(dto.cards.size == dto.cards.map { it.cardId }.toSet().size)
-        assert(dto.cards.size == dto.cards.map { it.name }.toSet().size)
-        assert(dto.cards.size == dto.cards.map { it.imageId }.toSet().size)
+        assert(dto.cards.size == dto.cards.map { it.tripId }.toSet().size)
+        assert(dto.cards.size == dto.cards.map { it.place }.toSet().size)
+        assert(dto.cards.size == dto.cards.map { it.price }.toSet().size)
     }
 }
