@@ -1,8 +1,7 @@
 
-create table user_statss (
-    user_id varchar(255) not null,
-    defeats integer not null check (defeats >= 0),
-    draws integer not null check (draws >= 0),
+create table user_trips (
+    trip_id varchar(255) not null,
+    place integer not null check (place >= 0),
+    duration integer not null check (duration >= 0),
     score integer not null check (score >= 0),
-    victories integer not null check (victories >= 0),
-    primary key (user_id));
+    primary key (trip_id));

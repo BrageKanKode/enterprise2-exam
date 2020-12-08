@@ -10,7 +10,7 @@ import kotlin.random.Random
 @Service
 @Transactional
 class FakeDataService(
-        val repository: UserStatsRepository
+        val repository: UserTripsRepository
 ) {
 
     @PostConstruct
@@ -21,11 +21,10 @@ class FakeDataService(
     }
 
     fun createRandomUser(userId: String){
-        val stats = UserStatss(userId,
+        val userWithTrip = UserTrips(userId,
                 Random.nextInt(50),
                 Random.nextInt(50),
-                Random.nextInt(5),
                 Random.nextInt(30))
-        repository.save(stats)
+        repository.save(userWithTrip)
     }
 }

@@ -11,13 +11,13 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 @ActiveProfiles("FakeData,test")
 @ExtendWith(SpringExtension::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
-internal class UserStatssServiceTest{
+internal class UserTripsServiceTest{
 
     @Autowired
-    private lateinit var service: UserStatsService
+    private lateinit var service: UserTripsService
 
     @Autowired
-    private lateinit var repository: UserStatsRepository
+    private lateinit var repository: UserTripsRepository
 
     @Test
     fun testInit(){

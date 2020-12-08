@@ -9,16 +9,16 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import rest.PageDto
 import rest.WrappedResponse
-import trips.db.UserStatsService
+import trips.db.UserTripsService
 import trips.dto.CollectionDto
-import trips.dto.UserStatsDto
+import trips.dto.UserTripsDto
 import java.net.URI
 import java.util.concurrent.TimeUnit
 
 @Api(value = "/api/cards", description = "Operation on the cards existing in the game")
 @RequestMapping(path = ["/api/cards"])
 @RestController
-class RestApi (private val statsService: UserStatsService) {
+class RestApi (private val tripsService: UserTripsService) {
 
     companion object {
         const val LATEST = "v1_000"
@@ -62,17 +62,17 @@ class RestApi (private val statsService: UserStatsService) {
             //
             @ApiParam("Score of the player in the previous page")
             @RequestParam("keysetScore", required = false)
-            keysetScore: Int?): ResponseEntity<WrappedResponse<PageDto<UserStatsDto>>> {
+            keysetScore: Int?): ResponseEntity<WrappedResponse<PageDto<UserTripsDto>>> {
 
-        val page = PageDto<UserStatsDto>()
+        val page = PageDto<UserTripsDto>()
 
         val n = 10
-        val scores = DtoConverter.transform(statsService.getNextPage(n, keysetId, keysetScore))
+        val scores = DtoConverter.transform(tripsService.getNextPage(n, keysetId, keysetScore))
         page.list = scores
 
         if (scores.size == n) {
             val last = scores.last()
-            page.next = "/api/scores?keysetId=${last.userId}&keysetScore=${last.score}"
+            page.next = "/api/scores?keysetId=${last.tripId}&keysetScore=${last.score}"
         }
 
         return ResponseEntity

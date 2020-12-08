@@ -2,16 +2,16 @@ package trips.dto
 
 import io.swagger.annotations.ApiModelProperty
 
-data class UserStatsDto(
+data class UserTripsDto(
 
         @get:ApiModelProperty("The id of the player")
-        var userId: String? = null,
+        var tripId: String? = null,
 
         @get:ApiModelProperty("How many victories the player had so far")
-        var victories : Int? = null,
+        var place : Int? = null,
 
         @get:ApiModelProperty("How many defeats the player had so far")
-        var defeats: Int? = null,
+        var duration: Int? = null,
 
         @get:ApiModelProperty("How many draws the player had so far")
         var draws : Int? = null,

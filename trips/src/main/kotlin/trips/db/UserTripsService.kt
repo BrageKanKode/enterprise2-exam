@@ -8,27 +8,27 @@ import javax.persistence.EntityManager
 import javax.persistence.TypedQuery
 
 @Repository
-interface UserStatsRepository : CrudRepository<UserStatss, String>
+interface UserTripsRepository : CrudRepository<UserTrips, String>
 
 @Service
 @Transactional
-class UserStatsService(
-        val repository: UserStatsRepository,
+class UserTripsService(
+        val repository: UserTripsRepository,
         val em: EntityManager
 ) {
 
-    fun registerNewUser(userId: String) : Boolean{
+    fun registerNewUser(tripId: String) : Boolean{
 
-        if(repository.existsById(userId)){
+        if(repository.existsById(tripId)){
             return false
         }
 
-        val stats = UserStatss(userId, 0, 0, 0, 0)
+        val stats = UserTrips(tripId, 0, 0, 0)
         repository.save(stats)
         return true
     }
 
-    fun getNextPage(size: Int, keysetId: String? = null, keysetScore: Int? = null): List<UserStatss>{
+    fun getNextPage(size: Int, keysetId: String? = null, keysetScore: Int? = null): List<UserTrips>{
 
         if (size < 1 || size > 1000) {
             throw IllegalArgumentException("Invalid size value: $size")
@@ -38,15 +38,15 @@ class UserStatsService(
             throw IllegalArgumentException("keysetId and keysetScore should be both missing, or both present")
         }
 
-        val query: TypedQuery<UserStatss>
+        val query: TypedQuery<UserTrips>
         if (keysetId == null) {
             query = em.createQuery(
-                    "select s from UserStatss s order by s.score DESC, s.userId DESC"
-                    , UserStatss::class.java)
+                    "select s from UserTrips s order by s.score DESC, s.tripId DESC"
+                    , UserTrips::class.java)
         } else {
             query = em.createQuery(
-                    "select s from UserStatss s where s.score<?2 or (s.score=?2 and s.userId<?1) order by s.score DESC, s.userId DESC"
-                    , UserStatss::class.java)
+                    "select s from UserTrips s where s.score<?2 or (s.score=?2 and s.tripId<?1) order by s.score DESC, s.tripId DESC"
+                    , UserTrips::class.java)
             query.setParameter(1, keysetId)
             query.setParameter(2, keysetScore)
         }
