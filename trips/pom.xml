@@ -98,7 +98,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <finalName>cards</finalName>
+                    <finalName>trips</finalName>
                 </configuration>
             </plugin>
         </plugins>

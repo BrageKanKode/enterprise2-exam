@@ -37,10 +37,10 @@ services:
     environment:
       - POSTGRES_HOST_AUTH_METHOD=trust
 
-#  postgres-scores:
-#    image: "postgres:10"
-#    environment:
-#      - POSTGRES_HOST_AUTH_METHOD=trust
+  postgres-scores:
+    image: "postgres:10"
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
 
 #  auth:
 #    build:
@@ -54,7 +54,7 @@ services:
 
   cards_0:
     build:
-      context: ./cards
+      context: ./trips
       dockerfile: Dockerfile
     depends_on:
       - api-gateway
@@ -64,7 +64,7 @@ services:
 
   cards_1:
     build:
-      context: ./cards
+      context: ./trips
       dockerfile: Dockerfile
     depends_on:
       - api-gateway
@@ -80,7 +80,7 @@ services:
       - api-gateway
       - discovery
       - postgres-user-collections
-      - auth
+#      - auth
       - rabbitmq
 
 #  scores:
