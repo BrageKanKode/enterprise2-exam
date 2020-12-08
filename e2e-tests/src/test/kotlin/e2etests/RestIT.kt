@@ -86,7 +86,7 @@ class RestIT {
                 .ignoreExceptions()
                 .until {
                     given().accept(ContentType.JSON)
-                            .get("/api/scores")
+                            .get("/api/cards")
                             .then()
                             .statusCode(200)
                             .body("data.list.size()", greaterThan(0))
@@ -138,68 +138,68 @@ class RestIT {
                 }
     }
 
-//    @Test
-//    fun testAMQPSignUp() {
-//        Awaitility.await().atMost(120, TimeUnit.SECONDS)
-//                .pollInterval(Duration.ofSeconds(10))
-//                .ignoreExceptions()
-//                .until {
-//
-//                    val id = "foo_testCreateUser_" + System.currentTimeMillis()
-//
-//                    given().get("/api/auth/user")
-//                            .then()
-//                            .statusCode(401)
-//
-//                    given().put("/api/user-collections/$id")
-//                            .then()
-//                            .statusCode(401)
-//
-//                    given().get("/api/scores/$id")
-//                            .then()
-//                            .statusCode(404)
-//
-//
-//                    val password = "123456"
-//
-//                    val cookie = given().contentType(ContentType.JSON)
-//                            .body("""
-//                                {
-//                                    "userId": "$id",
-//                                    "password": "$password"
-//                                }
-//                            """.trimIndent())
-//                            .post("/api/auth/signUp")
-//                            .then()
-//                            .statusCode(201)
-//                            .header("Set-Cookie", CoreMatchers.not(equalTo(null)))
-//                            .extract().cookie("SESSION")
-//
-//                    given().cookie("SESSION", cookie)
-//                            .get("/api/auth/user")
-//                            .then()
-//                            .statusCode(200)
-//
-//                    Awaitility.await().atMost(10, TimeUnit.SECONDS)
-//                            .pollInterval(Duration.ofSeconds(2))
-//                            .ignoreExceptions()
-//                            .until {
-//                                given().cookie("SESSION", cookie)
-//                                        .get("/api/user-collections/$id")
-//                                        .then()
-//                                        .statusCode(200)
-//
-//                                given().get("/api/scores/$id")
-//                                        .then()
-//                                        .statusCode(200)
-//                                        .body("data.score", equalTo(0))
-//
-//                                true
-//                            }
-//
-//                    true
-//                }
-//    }
+    @Test
+    fun testAMQPSignUp() {
+        Awaitility.await().atMost(120, TimeUnit.SECONDS)
+                .pollInterval(Duration.ofSeconds(10))
+                .ignoreExceptions()
+                .until {
+
+                    val id = "foo_testCreateUser_" + System.currentTimeMillis()
+
+                    given().get("/api/auth/user")
+                            .then()
+                            .statusCode(401)
+
+                    given().put("/api/user-collections/$id")
+                            .then()
+                            .statusCode(401)
+
+                    given().get("/api/cards/$id")
+                            .then()
+                            .statusCode(404)
+
+
+                    val password = "123456"
+
+                    val cookie = given().contentType(ContentType.JSON)
+                            .body("""
+                                {
+                                    "userId": "$id",
+                                    "password": "$password"
+                                }
+                            """.trimIndent())
+                            .post("/api/auth/signUp")
+                            .then()
+                            .statusCode(201)
+                            .header("Set-Cookie", CoreMatchers.not(equalTo(null)))
+                            .extract().cookie("SESSION")
+
+                    given().cookie("SESSION", cookie)
+                            .get("/api/auth/user")
+                            .then()
+                            .statusCode(200)
+
+                    Awaitility.await().atMost(10, TimeUnit.SECONDS)
+                            .pollInterval(Duration.ofSeconds(2))
+                            .ignoreExceptions()
+                            .until {
+                                given().cookie("SESSION", cookie)
+                                        .get("/api/user-collections/$id")
+                                        .then()
+                                        .statusCode(200)
+
+                                given().get("/api/cards/$id")
+                                        .then()
+                                        .statusCode(200)
+                                        .body("data.score", equalTo(0))
+
+                                true
+                            }
+
+                    true
+                }
+    }
 
 
     @Test

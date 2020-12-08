@@ -81,7 +81,6 @@ internal class RestApiTest{
                 .body("data.list.size()", CoreMatchers.equalTo(page))
                 .extract().body().jsonPath().getObject("data",object: TypeRef<PageDto<Map<String, Object>>>(){})
         read.addAll(page.list.map { it["tripId"].toString()})
-        println(page)
 
         checkOrder(page)
 

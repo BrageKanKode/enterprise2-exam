@@ -27,10 +27,10 @@ services:
   redis:
     image: "redis:latest"
 
-#  postgres-auth:
-#    image: "postgres:10"
-#    environment:
-#      - POSTGRES_HOST_AUTH_METHOD=trust
+  postgres-auth:
+    image: "postgres:10"
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
 
   postgres-user-collections:
     image: "postgres:10"
@@ -42,15 +42,15 @@ services:
     environment:
       - POSTGRES_HOST_AUTH_METHOD=trust
 
-#  auth:
-#    build:
-#      context: ./auth
-#      dockerfile: Dockerfile
-#    depends_on:
-#      - api-gateway
-#      - redis
-#      - postgres-auth
-#      - rabbitmq
+  auth:
+    build:
+      context: ./auth
+      dockerfile: Dockerfile
+    depends_on:
+      - api-gateway
+      - redis
+      - postgres-auth
+      - rabbitmq
 
   cards_0:
     build:
@@ -80,7 +80,7 @@ services:
       - api-gateway
       - discovery
       - postgres-user-collections
-#      - auth
+      - auth
       - rabbitmq
 
 #  scores:

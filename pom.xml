@@ -15,6 +15,7 @@
         <module>user-collections</module>
         <module>e2e-tests</module>
         <module>api-gateway</module>
+        <module>auth</module>
     </modules>
     <packaging>pom</packaging>
 

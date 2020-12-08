@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="e2e-tests" />
+        <module name="auth" />
         <module name="trips" />
         <module name="rest-dto" />
         <module name="api-gateway" />

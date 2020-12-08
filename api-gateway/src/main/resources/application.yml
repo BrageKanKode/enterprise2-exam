@@ -12,10 +12,10 @@ spring:
         locator:
           enabled: true
       routes:
-#        - id: Auth
-#          uri: http://auth:8080
-#          predicates:
-#            - Path=/api/auth/**
+        - id: Auth
+          uri: http://auth:8080
+          predicates:
+            - Path=/api/auth/**
         - id: Trips
           uri: lb://trips-service
           predicates:
