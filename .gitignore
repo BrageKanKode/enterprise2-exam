@@ -1,0 +1,7 @@
+# Project exclude paths
+/rest-dto/target/
+/rest-exception/target/
+/target/
+/trips/target/
+/trips-dto/target/
+/user-collections/target/
