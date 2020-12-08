@@ -1,6 +1,5 @@
 package usercollections.db
 
-import org.springframework.context.annotation.Bean
 import org.springframework.data.jpa.repository.Lock
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
@@ -25,7 +24,7 @@ interface UserRepository : CrudRepository<User, String> {
 @Transactional
 class UserService(
         private val userRepository: UserRepository,
-        private val cardService: TripService
+        private val tripService: TripService
 ) {
 
     companion object{
@@ -55,13 +54,13 @@ class UserService(
         return true
     }
 
-    private fun validateCard(cardId: String) {
-        if (!cardService.isInitialized()) {
+    private fun validateTrip(tripId: String) {
+        if (!tripService.isInitialized()) {
             throw IllegalStateException("Card service is not initialized")
         }
 
-        if (!cardService.cardCollection.any { it.cardId == cardId }) {
-            throw IllegalArgumentException("Invalid cardId: $cardId")
+        if (!tripService.cardCollection.any { it.cardId == tripId }) {
+            throw IllegalArgumentException("Invalid tripId: $tripId")
         }
     }
 
@@ -71,15 +70,15 @@ class UserService(
         }
     }
 
-    private fun validate(userId: String, cardId: String) {
+    private fun validate(userId: String, tripId: String) {
         validateUser(userId)
-        validateCard(cardId)
+        validateTrip(tripId)
     }
 
-    fun buyCard(userId: String, cardId: String) {
-        validate(userId, cardId)
+    fun buyTrip(userId: String, tripId: String) {
+        validate(userId, tripId)
 
-        val price = cardService.price(cardId)
+        val price = tripService.price(tripId)
         val user = userRepository.lockedFind(userId)!!
 
         if (user.coins < price) {
@@ -88,14 +87,14 @@ class UserService(
 
         user.coins -= price
 
-        addCard(user, cardId)
+        addCard(user, tripId)
     }
 
-    private fun addCard(user: User, cardId: String) {
-        user.ownedCards.find { it.cardId == cardId }
+    private fun addCard(user: User, tripId: String) {
+        user.ownedCards.find { it.cardId == tripId }
                 ?.apply { numberOfCopies++ }
                 ?: TripCopy().apply {
-                    this.cardId = cardId
+                    this.cardId = tripId
                     this.user = user
                     this.numberOfCopies = 1
                 }.also { user.ownedCards.add(it) }
@@ -113,7 +112,7 @@ class UserService(
 
         copy.numberOfCopies--
 
-        val millValue = cardService.millValue(cardId)
+        val millValue = tripService.millValue(cardId)
         user.coins += millValue
     }
 
@@ -129,7 +128,7 @@ class UserService(
 
         user.cardPacks--
 
-        val selection = cardService.getRandomSelection(CARDS_PER_PACK)
+        val selection = tripService.getRandomSelection(CARDS_PER_PACK)
 
         val ids = mutableListOf<String>()
 

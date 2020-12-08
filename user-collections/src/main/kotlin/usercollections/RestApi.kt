@@ -76,7 +76,7 @@ class RestAPI(
 
         if(dto.command == Command.BUY_CARD){
             try{
-                userService.buyCard(userId, cardId)
+                userService.buyTrip(userId, cardId)
             } catch (e: IllegalArgumentException){
                 return RestResponseFactory.userFailure(e.message ?: "Failed to buy card $cardId")
             }

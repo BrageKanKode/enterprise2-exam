@@ -81,27 +81,5 @@ class RestApi (private val tripsService: UserTripsService) {
                 .body(WrappedResponse(200, page).validated())
     }
 
-//    @ApiOperation("Return the image for the specified card")
-//    @GetMapping(
-//            path = ["/imgs/{imgId}"],
-//            produces = ["image/svg+xml"]
-//    )
-//    fun getImage(@PathVariable("imgId") imgId: String) : ResponseEntity<String>{
-//        val folder = when{
-//            imgId.run{ endsWith("-monster.svg") || endsWith("-cyclops.svg")
-//                    || endsWith("-dragon.svg") || endsWith("-snake.svg")}
-//            -> "/1236106-monsters"
-//            else -> return ResponseEntity.status(400).build()
-//        }
-//
-//        val svg = javaClass.getResource("$folder/svg/$imgId")?.readText()
-//                ?: return ResponseEntity.notFound().build()
-//
-//        return ResponseEntity
-//                .status(200)
-//                .cacheControl(CacheControl.maxAge(365, TimeUnit.DAYS).cachePublic())
-//                .body(svg)
-//    }
-
 
 }

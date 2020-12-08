@@ -69,7 +69,7 @@ internal class UserServiceTest{
         val cardId = "c00"
 
         userService.registerNewUser(userId)
-        userService.buyCard(userId, cardId)
+        userService.buyTrip(userId, cardId)
 
         val user = userService.findByIdEager(userId)!!
         assertTrue(user.ownedCards.any { it.cardId == cardId})
@@ -83,7 +83,7 @@ internal class UserServiceTest{
         userService.registerNewUser(userId)
 
         val e = assertThrows(IllegalArgumentException::class.java){
-            userService.buyCard(userId, cardId)
+            userService.buyTrip(userId, cardId)
         }
         assertTrue(e.message!!.contains("coin"), "Wrong error message: ${e.message}")
     }
