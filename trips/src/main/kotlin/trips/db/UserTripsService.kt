@@ -17,7 +17,7 @@ class UserTripsService(
         val em: EntityManager
 ) {
 
-    fun registerNewUser(tripId: String) : Boolean{
+    fun registerNewTrip(tripId: String) : Boolean{
 
         if(repository.existsById(tripId)){
             return false

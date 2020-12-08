@@ -13,9 +13,6 @@ data class UserTripsDto(
         @get:ApiModelProperty("How many defeats the player had so far")
         var duration: Int? = null,
 
-        @get:ApiModelProperty("How many draws the player had so far")
-        var draws : Int? = null,
-
         @get:ApiModelProperty("The current score of the player")
         var score: Int? = null
 )

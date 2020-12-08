@@ -25,9 +25,9 @@ internal class UserTripsServiceTest{
     }
 
     @Test
-    fun testCreateUser(){
+    fun testCreateTrip(){
         val n = repository.count()
-        service.registerNewUser("Bar001")
+        service.registerNewTrip("Bar001")
         assertEquals(n+1, repository.count())
     }
 

@@ -6,10 +6,12 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="rest-exception" />
-        <module name="user-collections" />
+        <module name="e2e-tests" />
         <module name="trips" />
         <module name="rest-dto" />
+        <module name="api-gateway" />
+        <module name="rest-exception" />
+        <module name="user-collections" />
         <module name="trips-dto" />
       </profile>
     </annotationProcessing>

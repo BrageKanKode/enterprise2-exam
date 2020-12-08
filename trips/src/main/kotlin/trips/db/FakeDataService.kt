@@ -16,11 +16,11 @@ class FakeDataService(
     @PostConstruct
     fun init(){
         for(i in 0..49){
-            createRandomUser("Foo" + i.toString().padStart(2, '0'))
+            createRandomTrips("Foo" + i.toString().padStart(2, '0'))
         }
     }
 
-    fun createRandomUser(userId: String){
+    fun createRandomTrips(userId: String){
         val userWithTrip = UserTrips(userId,
                 Random.nextInt(50),
                 Random.nextInt(50),
