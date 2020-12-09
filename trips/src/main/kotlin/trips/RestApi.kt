@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*
 import rest.PageDto
 import rest.RestResponseFactory
 import rest.WrappedResponse
+import trips.db.Trips
 import trips.db.UserTripsRepository
 import trips.db.TripsService
 import trips.dto.CollectionDto
@@ -39,9 +40,9 @@ class RestApi (
             path = ["/collection_$LATEST"],
             produces = [MediaType.APPLICATION_JSON_VALUE]
     )
-    fun getLatest() : ResponseEntity<WrappedResponse<CollectionDto>>{
+    fun getLatest() : ResponseEntity<WrappedResponse<Iterable<Trips>>>{
 
-        val collection = TripCollection.get()
+        val collection = statsRepository.findAll()
 
         return ResponseEntity
                 .status(200)
