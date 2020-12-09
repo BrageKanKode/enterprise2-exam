@@ -101,10 +101,10 @@ class TripService(
         }
     }
 
-    fun millValue(cardId: String) : Int {
+    fun millValue(tripId: String) : Int {
         verifyCollection()
-        val card : Trip = tripCollection.find { it.tripId  == cardId} ?:
-        throw IllegalArgumentException("Invalid cardId $cardId")
+        val card : Trip = tripCollection.find { it.tripId  == tripId} ?:
+        throw IllegalArgumentException("Invalid cardId $tripId")
 
         return collection!!.millValues[card.rarity]!!
     }
@@ -112,7 +112,7 @@ class TripService(
     fun price(tripId: String) : Int {
         verifyCollection()
         val trip : Trip = tripCollection.find { it.tripId  == tripId} ?:
-        throw IllegalArgumentException("Invalid cardId $tripId")
+        throw IllegalArgumentException("Invalid tripId $tripId")
 
         return collection!!.prices[trip.rarity]!!
     }

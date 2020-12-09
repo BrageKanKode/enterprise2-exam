@@ -72,21 +72,15 @@ class RestAPI(
             return RestResponseFactory.userFailure("Missing command")
         }
 
-        if(dto.command == Command.OPEN_PACK){
-            val ids = try {
-                userService.openPack(userId)
-            } catch (e: IllegalArgumentException){
-                return RestResponseFactory.userFailure(e.message ?: "Failed to open pack")
-            }
-            return RestResponseFactory.payload(200, PatchResultDto().apply { cardIdsInOpenedPack.addAll(ids) })
-        }
-
-        val tripId = dto.cardId
+        val tripId = dto.tripId
                 ?: return RestResponseFactory.userFailure("Missing trip id")
 
+
         if(dto.command == Command.BUY_CARD){
+            val people = dto.people
+                    ?: return RestResponseFactory.userFailure("Missing amount of people")
             try{
-                userService.buyTrip(userId, tripId)
+                userService.buyTrip(userId, people, tripId)
             } catch (e: IllegalArgumentException){
                 return RestResponseFactory.userFailure(e.message ?: "Failed to buy trip $tripId")
             }

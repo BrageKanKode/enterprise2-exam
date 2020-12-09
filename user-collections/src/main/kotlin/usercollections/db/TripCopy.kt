@@ -19,8 +19,11 @@ class TripCopy(
         var user : User? = null,
 
         @get:NotBlank
-        var cardId: String? = null,
+        var tripId: String? = null,
 
         @get:Min(0)
-        var numberOfCopies : Int = 0
+        var numberOfCopies : Int = 0,
+
+        @get:Min(0)
+        var people: Int = 0
 )

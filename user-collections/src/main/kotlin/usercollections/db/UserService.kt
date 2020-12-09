@@ -35,7 +35,7 @@ class UserService(
 
         val user = userRepository.findById(userId).orElse(null)
         if(user != null){
-            user.ownedCards.size
+            user.ownedTrips.size
         }
         return user
     }
@@ -57,8 +57,8 @@ class UserService(
 
         val user = User()
         user.userId = userId
-        user.cardPacks = 3
         user.coins = 100
+        user.active = true
         userRepository.save(user)
         return true
     }
@@ -84,68 +84,45 @@ class UserService(
         validateTrip(tripId)
     }
 
-    fun buyTrip(userId: String, tripId: String) {
+    fun buyTrip(userId: String, people: Int, tripId: String) {
         validate(userId, tripId)
 
         val price = tripService.price(tripId)
         val user = userRepository.lockedFind(userId)!!
 
-        if (user.coins < price) {
+        if (user.coins < price * people) {
             throw IllegalArgumentException("Not enough coins")
         }
 
-        user.coins -= price
+        user.coins -= price * people
 
-        addCard(user, tripId)
+        addTrip(user, people, tripId)
     }
 
-    private fun addCard(user: User, tripId: String) {
-        user.ownedCards.find { it.cardId == tripId }
+    private fun addTrip(user: User, people: Int, tripId: String) {
+        user.ownedTrips.find { it.tripId == tripId }
                 ?.apply { numberOfCopies++ }
                 ?: TripCopy().apply {
-                    this.cardId = tripId
+                    this.tripId = tripId
                     this.user = user
                     this.numberOfCopies = 1
-                }.also { user.ownedCards.add(it) }
+                    this.people = people
+                }.also { user.ownedTrips.add(it) }
     }
 
-    fun millCard(userId: String, cardId: String) {
-        validate(userId, cardId)
+    fun millCard(userId: String, tripId: String) {
+        validate(userId, tripId)
 
         val user = userRepository.lockedFind(userId)!!
 
-        val copy = user.ownedCards.find { it.cardId == cardId }
+        val copy = user.ownedTrips.find { it.tripId == tripId }
         if(copy == null || copy.numberOfCopies == 0){
-            throw IllegalArgumentException("User $userId does not own a copy of $cardId")
+            throw IllegalArgumentException("User $userId does not own a copy of $tripId")
         }
 
         copy.numberOfCopies--
 
-        val millValue = tripService.millValue(cardId)
+        val millValue = tripService.millValue(tripId)
         user.coins += millValue
-    }
-
-    fun openPack(userId: String) : List<String> {
-
-        validateUser(userId)
-
-        val user = userRepository.lockedFind(userId)!!
-
-        if(user.cardPacks < 1){
-            throw IllegalArgumentException("No pack to open")
-        }
-
-        user.cardPacks--
-
-        val selection = tripService.getRandomSelection(CARDS_PER_PACK)
-
-        val ids = mutableListOf<String>()
-
-        selection.forEach {
-            addCard(user, it.tripId)
-            ids.add(it.tripId)
-        }
-
-        return ids
     }
 }
