@@ -38,6 +38,16 @@ class RestAPI(
         return RestResponseFactory.payload(200, DtoConverter.transform(user))
     }
 
+    @ApiOperation("Delete a user, with the given id")
+    @DeleteMapping(path = ["/{userId}"])
+    fun deleteUser(
+            @PathVariable("userId") userId: String
+    ): ResponseEntity<WrappedResponse<Void>> {
+        val ok = userService.deleteUser(userId)
+        return if(!ok) RestResponseFactory.userFailure("User $userId doesn't exist")
+        else RestResponseFactory.noPayload(201)
+    }
+
     @ApiOperation("Create a new user, with the given id")
     @PutMapping(path = ["/{userId}"])
     fun createUser(

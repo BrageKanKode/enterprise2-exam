@@ -135,6 +135,23 @@ internal class RestAPITest {
     }
 
     @Test
+    fun testDeleteUser() {
+        val id = "foo"
+
+        given().auth().basic(id, "123")
+                .put("/$id")
+                .then()
+                .statusCode(201)
+
+        assertTrue(userRepository.existsById(id))
+
+        given().auth().basic(id, "123")
+                .delete("/$id")
+                .then()
+                .statusCode(201)
+    }
+
+    @Test
     fun testBuyCard() {
 
         val userId = "foo"

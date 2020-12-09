@@ -40,6 +40,15 @@ class UserService(
         return user
     }
 
+    fun deleteUser(userId: String): Boolean {
+        if (!userRepository.existsById(userId)) {
+            return false
+        }
+        userRepository.deleteById(userId)
+
+        return true
+    }
+
     fun registerNewUser(userId: String) : Boolean{
 
         if(userRepository.existsById(userId)){
