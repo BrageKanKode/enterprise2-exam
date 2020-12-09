@@ -4,7 +4,8 @@ import io.swagger.annotations.ApiModelProperty
 
 enum class Command {
     CANCEL_TRIP,
-    BUY_TRIP
+    BUY_TRIP,
+    ALTER_PEOPLE
 }
 
 data class PatchUserDto(

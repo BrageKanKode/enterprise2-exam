@@ -19,7 +19,7 @@ object FakeData {
             add(TripDto(tripId = "c05", cost = 100))
             add(TripDto(tripId = "c06", cost = 100))
             add(TripDto(tripId = "c07", cost = 100))
-            add(TripDto(tripId = "c08", cost = 100))
+            add(TripDto(tripId = "c08", cost = 50))
             add(TripDto(tripId = "c09", cost = 100))
         }
 

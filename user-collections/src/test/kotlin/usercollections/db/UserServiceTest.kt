@@ -91,6 +91,28 @@ internal class UserServiceTest{
     }
 
     @Test
+    fun testAlterPeople(){
+        val userId = "foo"
+        val tripId = "c08"
+        var people = 2
+
+        userService.registerNewUser(userId)
+        userService.buyTrip(userId, people, tripId)
+
+        val user = userService.findByIdEager(userId)!!
+        assertTrue(user.ownedTrips.any { it.tripId == tripId})
+
+        val before = userRepository.findById(userId).get()
+        val coins = before.coins
+
+        people = 1
+
+        userService.alterPeople(userId, tripId, people)
+        val after = userService.findByIdEager(userId)!!
+        assertTrue(after.coins > coins)
+    }
+
+    @Test
     fun testMillCard(){
 
         val userId = "foo"

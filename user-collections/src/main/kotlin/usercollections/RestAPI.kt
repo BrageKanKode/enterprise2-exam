@@ -95,6 +95,16 @@ class RestAPI(
             }
             return RestResponseFactory.payload(200, PatchResultDto())
         }
+        if(dto.command == Command.ALTER_PEOPLE){
+            val people = dto.people
+                    ?: return RestResponseFactory.userFailure("Missing amount of people")
+            try {
+                userService.alterPeople(userId, tripId, people)
+            } catch (e: IllegalArgumentException){
+                return RestResponseFactory.userFailure(e.message ?: "Failed to alter People in trip $tripId")
+            }
+            return RestResponseFactory.payload(200, PatchResultDto())
+        }
 
         return RestResponseFactory.userFailure("Unrecognized command: ${dto.command}")
     }

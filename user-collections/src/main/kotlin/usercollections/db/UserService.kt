@@ -41,9 +41,7 @@ class UserService(
     }
 
     fun deleteUser(userId: String): Boolean {
-        if (!userRepository.existsById(userId)) {
-            return false
-        }
+        validateUser(userId)
         userRepository.deleteById(userId)
 
         return true
@@ -83,6 +81,37 @@ class UserService(
         validateTrip(tripId)
     }
 
+    fun alterPeople(userId: String, tripId: String, people: Int) {
+        validate(userId, tripId)
+        if (people <= 0) {
+            throw java.lang.IllegalArgumentException("Can't change amount of people to under 1")
+        }
+
+        val user = userRepository.lockedFind(userId)!!
+        val copy = user.ownedTrips.find { it.tripId == tripId }
+        val price = tripService.price(tripId)
+
+        if(copy == null || copy.numberOfCopies == 0){
+            throw IllegalArgumentException("User $userId does not own a copy of $tripId")
+        }
+
+        if (copy.people < people ) {
+            // add people
+            user.coins = user.coins - (price * people)
+        }
+        else if (copy.people > people) {
+            // subtract people
+            user.coins = user.coins + (price * people)
+        } else {
+            // It's the same
+        }
+
+        user.ownedTrips.find { it.tripId == tripId }
+                ?.apply { numberOfCopies = people }.also {
+                    user.ownedTrips.add(it!!)
+                }
+    }
+
     fun buyTrip(userId: String, people: Int, tripId: String) {
         validate(userId, tripId)
 
@@ -100,7 +129,7 @@ class UserService(
 
     private fun addTrip(user: User, people: Int, tripId: String) {
         user.ownedTrips.find { it.tripId == tripId }
-                ?.apply { numberOfCopies++ }
+                ?.apply { numberOfCopies = people }
                 ?: TripCopy().apply {
                     this.tripId = tripId
                     this.user = user

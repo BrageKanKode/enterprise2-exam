@@ -207,4 +207,39 @@ internal class RestAPITest {
         assertTrue(after.coins > coins)
         assertEquals(n - 1, after.ownedTrips.sumBy { it.numberOfCopies })
     }
+
+    @Test
+    fun testAlterBooking() {
+
+        val userId = "foo"
+        var tripId = "c08"
+        var people = 2
+        given().auth().basic(userId, "123").put("/$userId").then().statusCode(201)
+
+
+        given().auth().basic(userId, "123")
+                .contentType(ContentType.JSON)
+                .body(PatchUserDto(Command.BUY_TRIP, tripId, people))
+                .patch("/$userId")
+                .then()
+                .statusCode(200)
+
+        val before = userRepository.findById(userId).get()
+        val coins = before.coins
+
+        val between = userService.findByIdEager(userId)!!
+        val n = between.ownedTrips.sumBy { it.numberOfCopies }
+
+        people = 1
+
+        given().auth().basic(userId, "123")
+                .contentType(ContentType.JSON)
+                .body(PatchUserDto(Command.ALTER_PEOPLE, tripId, people))
+                .patch("/$userId")
+                .then()
+                .statusCode(200)
+
+        val after = userService.findByIdEager(userId)!!
+        assertTrue(after.coins > coins)
+    }
 }

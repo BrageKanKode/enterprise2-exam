@@ -9,20 +9,6 @@ object TripCollection {
     fun get() : CollectionDto {
         val dto = CollectionDto()
 
-//        dto.prices.run {
-//            put(BRONZE, 100)
-//            put(SILVER, 500)
-//            put(GOLD, 1_000)
-//            put(PINK_DIAMOND, 100_000)
-//        }
-//        dto.prices.forEach { dto.millValues[it.key] = it.value / 4 }
-//
-//        dto.rarityProbabilities.run {
-//            put(SILVER, 0.10)
-//            put(GOLD, 0.01)
-//            put(PINK_DIAMOND, 0.001)
-//            put(BRONZE, 1 - get(SILVER)!! - get(GOLD)!! - get(PINK_DIAMOND)!!)
-//        }
 
         addCards(dto)
 
