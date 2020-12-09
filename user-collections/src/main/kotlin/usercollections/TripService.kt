@@ -12,7 +12,6 @@ import org.springframework.web.client.RestTemplate
 import org.springframework.web.util.UriComponentsBuilder
 import rest.WrappedResponse
 import trips.dto.CollectionDto
-import trips.dto.Rarity.*
 import usercollections.model.Trip
 import usercollections.model.Collection
 import javax.annotation.PostConstruct
@@ -103,10 +102,10 @@ class TripService(
 
     fun millValue(tripId: String) : Int {
         verifyCollection()
-        val card : Trip = tripCollection.find { it.tripId  == tripId} ?:
+        val trip : Trip = tripCollection.find { it.tripId  == tripId} ?:
         throw IllegalArgumentException("Invalid tripId $tripId")
 
-        return collection!!.millValues[card.rarity]!!
+        return trip.cost
     }
 
     fun price(tripId: String) : Int {
@@ -114,6 +113,6 @@ class TripService(
         val trip : Trip = tripCollection.find { it.tripId  == tripId} ?:
         throw IllegalArgumentException("Invalid tripId $tripId")
 
-        return collection!!.prices[trip.rarity]!!
+        return trip.cost
     }
 }

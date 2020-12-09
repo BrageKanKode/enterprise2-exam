@@ -5,10 +5,10 @@ import trips.dto.TripDto
 
 data class Trip(
         val tripId : String,
-        val rarity: Rarity
+        val cost: Int
 ){
 
     constructor(dto: TripDto): this(
             dto.tripId ?: throw IllegalArgumentException("Null cardId"),
-            dto.rarity ?: throw IllegalArgumentException("Null rarity"))
+            dto.cost ?: throw IllegalArgumentException("Null rarity"))
 }

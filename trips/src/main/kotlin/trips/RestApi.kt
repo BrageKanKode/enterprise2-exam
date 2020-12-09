@@ -13,7 +13,8 @@ import rest.WrappedResponse
 import trips.db.UserTripsRepository
 import trips.db.TripsService
 import trips.dto.CollectionDto
-import trips.dto.TripsDto
+import trips.dto.TripDto
+//import trips.dto.TripsDto
 import java.net.URI
 import java.util.concurrent.TimeUnit
 
@@ -65,7 +66,7 @@ class RestApi (
     @GetMapping(path = ["/{tripId}"])
     fun getTripInfo(
             @PathVariable("tripId") tripId: String
-    ): ResponseEntity<WrappedResponse<TripsDto>> {
+    ): ResponseEntity<WrappedResponse<TripDto>> {
 
         val trip = statsRepository.findById(tripId).orElse(null)
         if (trip == null) {
@@ -94,9 +95,9 @@ class RestApi (
             //
             @ApiParam("Score of the player in the previous page")
             @RequestParam("keysetScore", required = false)
-            keysetScore: Int?): ResponseEntity<WrappedResponse<PageDto<TripsDto>>> {
+            keysetScore: Int?): ResponseEntity<WrappedResponse<PageDto<TripDto>>> {
 
-        val page = PageDto<TripsDto>()
+        val page = PageDto<TripDto>()
 
         val n = 10
         val scores = DtoConverter.transform(tripsService.getNextPage(n, keysetId, keysetScore))

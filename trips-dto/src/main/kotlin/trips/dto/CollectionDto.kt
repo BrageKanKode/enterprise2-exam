@@ -1,10 +1,14 @@
 package trips.dto
 
+import io.swagger.annotations.ApiModelProperty
+
 class CollectionDto(
 
+        @get:ApiModelProperty("Lists of all the trips available")
         var trips: MutableList<TripDto> = mutableListOf(),
 
-        var prices: MutableMap<Rarity, Int> = mutableMapOf(),
+        @get:ApiModelProperty("Cost if each ticket")
+        var prices: MutableList<Int> = mutableListOf(),
 
         var millValues: MutableMap<Rarity, Int> = mutableMapOf(),
 

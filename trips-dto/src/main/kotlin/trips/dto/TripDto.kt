@@ -6,9 +6,7 @@ class TripDto(
 
         var place: String? = null,
 
-        var duration: String? = null,
+        var duration: Int? = null,
 
-        var rarity: Rarity? = null,
-
-        var price: String? = null
+        var cost: Int? = null
 )
