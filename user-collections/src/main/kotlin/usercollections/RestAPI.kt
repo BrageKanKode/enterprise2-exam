@@ -76,7 +76,7 @@ class RestAPI(
                 ?: return RestResponseFactory.userFailure("Missing trip id")
 
 
-        if(dto.command == Command.BUY_CARD){
+        if(dto.command == Command.BUY_TRIP){
             val people = dto.people
                     ?: return RestResponseFactory.userFailure("Missing amount of people")
             try{
@@ -87,11 +87,11 @@ class RestAPI(
             return RestResponseFactory.payload(200, PatchResultDto())
         }
 
-        if(dto.command == Command.MILL_CARD){
+        if(dto.command == Command.CANCEL_TRIP){
             try{
                 userService.millCard(userId, tripId)
             } catch (e: IllegalArgumentException){
-                return RestResponseFactory.userFailure(e.message ?: "Failed to mill trip $tripId")
+                return RestResponseFactory.userFailure(e.message ?: "Failed to cancel trip $tripId")
             }
             return RestResponseFactory.payload(200, PatchResultDto())
         }

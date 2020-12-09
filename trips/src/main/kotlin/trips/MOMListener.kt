@@ -3,11 +3,11 @@ package trips
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.stereotype.Service
-import trips.db.UserTripsService
+import trips.db.TripsService
 
 @Service
 class MOMListener(
-        private val statsService: UserTripsService
+        private val statsService: TripsService
 ) {
 
     companion object{

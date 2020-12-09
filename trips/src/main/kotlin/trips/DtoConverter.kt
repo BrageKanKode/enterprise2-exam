@@ -1,12 +1,12 @@
 package trips
 
-import trips.db.UserTrips
-import trips.dto.UserTripsDto
+import trips.db.Trips
+import trips.dto.TripsDto
 
 object DtoConverter {
 
-    fun transform(trips: UserTrips) : UserTripsDto =
-            trips.run { UserTripsDto(tripId, place, duration, score)}
+    fun transform(trips: Trips) : TripsDto =
+            trips.run { TripsDto(tripId, place, duration, cost)}
 
-    fun transform(scores: Iterable<UserTrips>) : List<UserTripsDto> = scores.map { transform(it) }
+    fun transform(scores: Iterable<Trips>) : List<TripsDto> = scores.map { transform(it) }
 }

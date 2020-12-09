@@ -16,8 +16,5 @@ class User(
         var coins: Int = 0,
 
         @get:OneToMany(mappedBy = "user", cascade = [(CascadeType.ALL)])
-        var ownedTrips : MutableList<TripCopy> = mutableListOf(),
-
-        @Enumerated(EnumType.ORDINAL)
-        var active: Boolean = true
+        var ownedTrips : MutableList<TripCopy> = mutableListOf()
 )

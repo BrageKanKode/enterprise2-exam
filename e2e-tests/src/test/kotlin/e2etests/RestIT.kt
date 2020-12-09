@@ -192,7 +192,7 @@ class RestIT {
                                 given().get("/api/cards/$id")
                                         .then()
                                         .statusCode(200)
-                                        .body("data.score", equalTo(0))
+                                        .body("data.cost", equalTo(0))
 
                                 true
                             }

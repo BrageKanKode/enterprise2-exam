@@ -1,5 +1,6 @@
 package trips.db
 
+import com.github.javafaker.Faker
 import org.springframework.context.annotation.Profile
 import org.springframework.stereotype.Service
 import javax.annotation.PostConstruct
@@ -12,7 +13,7 @@ import kotlin.random.Random
 class FakeDataService(
         val repository: UserTripsRepository
 ) {
-
+    private val faker = Faker()
     @PostConstruct
     fun init(){
         for(i in 0..49){
@@ -21,8 +22,8 @@ class FakeDataService(
     }
 
     fun createRandomTrips(userId: String){
-        val userWithTrip = UserTrips(userId,
-                Random.nextInt(50),
+        val userWithTrip = Trips(userId,
+                faker.country().capital(),
                 Random.nextInt(50),
                 Random.nextInt(30))
         repository.save(userWithTrip)

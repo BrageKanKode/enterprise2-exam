@@ -162,7 +162,7 @@ internal class RestAPITest {
 
         given().auth().basic(userId, "123")
                 .contentType(ContentType.JSON)
-                .body(PatchUserDto(Command.BUY_CARD, cardId, people))
+                .body(PatchUserDto(Command.BUY_TRIP, cardId, people))
                 .patch("/$userId")
                 .then()
                 .statusCode(200)
@@ -173,7 +173,7 @@ internal class RestAPITest {
 
 
     @Test
-    fun testMillCard() {
+    fun testCancelBooking() {
 
         val userId = "foo"
         var tripId = "c00"
@@ -183,7 +183,7 @@ internal class RestAPITest {
 
         given().auth().basic(userId, "123")
                 .contentType(ContentType.JSON)
-                .body(PatchUserDto(Command.BUY_CARD, tripId, people))
+                .body(PatchUserDto(Command.BUY_TRIP, tripId, people))
                 .patch("/$userId")
                 .then()
                 .statusCode(200)
@@ -198,7 +198,7 @@ internal class RestAPITest {
         tripId = between.ownedTrips[0].tripId!!
         given().auth().basic(userId, "123")
                 .contentType(ContentType.JSON)
-                .body(PatchUserDto(Command.MILL_CARD, tripId))
+                .body(PatchUserDto(Command.CANCEL_TRIP, tripId))
                 .patch("/$userId")
                 .then()
                 .statusCode(200)

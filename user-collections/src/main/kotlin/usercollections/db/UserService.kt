@@ -58,7 +58,6 @@ class UserService(
         val user = User()
         user.userId = userId
         user.coins = 100
-        user.active = true
         userRepository.save(user)
         return true
     }

@@ -11,9 +11,9 @@ import rest.PageDto
 import rest.RestResponseFactory
 import rest.WrappedResponse
 import trips.db.UserTripsRepository
-import trips.db.UserTripsService
+import trips.db.TripsService
 import trips.dto.CollectionDto
-import trips.dto.UserTripsDto
+import trips.dto.TripsDto
 import java.net.URI
 import java.util.concurrent.TimeUnit
 
@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit
 @RestController
 class RestApi (
         private val statsRepository: UserTripsRepository,
-        private val tripsService: UserTripsService
+        private val tripsService: TripsService
         ) {
 
     companion object {
@@ -65,7 +65,7 @@ class RestApi (
     @GetMapping(path = ["/{tripId}"])
     fun getTripInfo(
             @PathVariable("tripId") tripId: String
-    ): ResponseEntity<WrappedResponse<UserTripsDto>> {
+    ): ResponseEntity<WrappedResponse<TripsDto>> {
 
         val trip = statsRepository.findById(tripId).orElse(null)
         if (trip == null) {
@@ -94,9 +94,9 @@ class RestApi (
             //
             @ApiParam("Score of the player in the previous page")
             @RequestParam("keysetScore", required = false)
-            keysetScore: Int?): ResponseEntity<WrappedResponse<PageDto<UserTripsDto>>> {
+            keysetScore: Int?): ResponseEntity<WrappedResponse<PageDto<TripsDto>>> {
 
-        val page = PageDto<UserTripsDto>()
+        val page = PageDto<TripsDto>()
 
         val n = 10
         val scores = DtoConverter.transform(tripsService.getNextPage(n, keysetId, keysetScore))
@@ -104,7 +104,7 @@ class RestApi (
 
         if (scores.size == n) {
             val last = scores.last()
-            page.next = "/api/cards?keysetId=${last.tripId}&keysetScore=${last.score}"
+            page.next = "/api/cards?keysetId=${last.tripId}&keysetScore=${last.cost}"
         }
 
         return ResponseEntity

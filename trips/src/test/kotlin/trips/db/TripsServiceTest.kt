@@ -11,10 +11,10 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 @ActiveProfiles("FakeData,test")
 @ExtendWith(SpringExtension::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
-internal class UserTripsServiceTest{
+internal class TripsServiceTest{
 
     @Autowired
-    private lateinit var service: UserTripsService
+    private lateinit var service: TripsService
 
     @Autowired
     private lateinit var repository: UserTripsRepository
@@ -39,7 +39,7 @@ internal class UserTripsServiceTest{
         assertEquals(n, page.size)
 
         for(i in 0 until n-1){
-            assertTrue(page[i].score >= page[i+1].score)
+            assertTrue(page[i].cost >= page[i+1].cost)
         }
     }
 

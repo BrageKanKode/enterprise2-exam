@@ -3,8 +3,8 @@ package usercollections.dto
 import io.swagger.annotations.ApiModelProperty
 
 enum class Command {
-    MILL_CARD,
-    BUY_CARD
+    CANCEL_TRIP,
+    BUY_TRIP
 }
 
 data class PatchUserDto(

@@ -102,8 +102,8 @@ internal class RestApiTest{
 
     private fun checkOrder(page: PageDto<Map<String, Object>>) {
         for (i in 0 until page.list.size - 1) {
-            val ascore = page.list[i]["score"].toString().toInt()
-            val bscore = page.list[i + 1]["score"].toString().toInt()
+            val ascore = page.list[i]["cost"].toString().toInt()
+            val bscore = page.list[i + 1]["cost"].toString().toInt()
             val aid = page.list[i]["tripId"].toString()
             val bid = page.list[i + 1]["tripId"].toString()
             assertTrue(ascore >= bscore)

@@ -104,7 +104,7 @@ class TripService(
     fun millValue(tripId: String) : Int {
         verifyCollection()
         val card : Trip = tripCollection.find { it.tripId  == tripId} ?:
-        throw IllegalArgumentException("Invalid cardId $tripId")
+        throw IllegalArgumentException("Invalid tripId $tripId")
 
         return collection!!.millValues[card.rarity]!!
     }
@@ -115,37 +115,5 @@ class TripService(
         throw IllegalArgumentException("Invalid tripId $tripId")
 
         return collection!!.prices[trip.rarity]!!
-    }
-
-    fun getRandomSelection(n: Int) : List<Trip>{
-
-        if(n <= 0){
-            throw IllegalArgumentException("Non-positive n: $n")
-        }
-
-        verifyCollection()
-
-        val selection = mutableListOf<Trip>()
-
-        val probabilities = collection!!.rarityProbabilities
-        val bronze = probabilities[BRONZE]!!
-        val silver = probabilities[SILVER]!!
-        val gold = probabilities[GOLD]!!
-        //val pink = probabilities[Rarity.PINK_DIAMOND]!!
-
-        repeat(n) {
-            val p = Math.random()
-            val r = when{
-                p <= bronze -> BRONZE
-                p > bronze && p <= bronze + silver -> SILVER
-                p > bronze + silver && p <= bronze + silver + gold -> GOLD
-                p > bronze + silver + gold -> PINK_DIAMOND
-                else -> throw IllegalStateException("BUG for p=$p")
-            }
-            val card = collection!!.cardsByRarity[r].let{ it!![Random.nextInt(it.size)] }
-            selection.add(card)
-        }
-
-        return selection
     }
 }

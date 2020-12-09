@@ -8,11 +8,11 @@ import javax.persistence.EntityManager
 import javax.persistence.TypedQuery
 
 @Repository
-interface UserTripsRepository : CrudRepository<UserTrips, String>
+interface UserTripsRepository : CrudRepository<Trips, String>
 
 @Service
 @Transactional
-class UserTripsService(
+class TripsService(
         val repository: UserTripsRepository,
         val em: EntityManager
 ) {
@@ -23,12 +23,12 @@ class UserTripsService(
             return false
         }
 
-        val stats = UserTrips(tripId, 0, 0, 0)
+        val stats = Trips(tripId, "0", 0, 0)
         repository.save(stats)
         return true
     }
 
-    fun getNextPage(size: Int, keysetId: String? = null, keysetScore: Int? = null): List<UserTrips>{
+    fun getNextPage(size: Int, keysetId: String? = null, keysetScore: Int? = null): List<Trips>{
 
         if (size < 1 || size > 1000) {
             throw IllegalArgumentException("Invalid size value: $size")
@@ -38,15 +38,15 @@ class UserTripsService(
             throw IllegalArgumentException("keysetId and keysetScore should be both missing, or both present")
         }
 
-        val query: TypedQuery<UserTrips>
+        val query: TypedQuery<Trips>
         if (keysetId == null) {
             query = em.createQuery(
-                    "select s from UserTrips s order by s.score DESC, s.tripId DESC"
-                    , UserTrips::class.java)
+                    "select s from Trips s order by s.cost DESC, s.tripId DESC"
+                    , Trips::class.java)
         } else {
             query = em.createQuery(
-                    "select s from UserTrips s where s.score<?2 or (s.score=?2 and s.tripId<?1) order by s.score DESC, s.tripId DESC"
-                    , UserTrips::class.java)
+                    "select s from Trips s where s.cost<?2 or (s.cost=?2 and s.tripId<?1) order by s.cost DESC, s.tripId DESC"
+                    , Trips::class.java)
             query.setParameter(1, keysetId)
             query.setParameter(2, keysetScore)
         }
