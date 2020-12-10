@@ -73,7 +73,7 @@ internal class RestApiTest{
     fun testCreatePage() {
         val n = repository.count()
         val id = "admin"
-        val tripId = "Bar001"
+        val tripId = "Bar003"
         given().auth().basic(id, "admin")
                 .put("api/cards/$tripId")
                 .then()
@@ -85,12 +85,30 @@ internal class RestApiTest{
     fun testCreatePageFail() {
         val n = repository.count()
         val id = "foo"
-        val tripId = "Bar001"
+        val tripId = "Bar003"
         given().auth().basic(id, "123")
                 .put("api/cards/$tripId")
                 .then()
                 .statusCode(403)
         assertEquals(n, repository.count())
+    }
+
+    @Test
+    fun testGetTripInfo() {
+        val n = repository.count()
+        val id = "Bar001"
+        val adminId = "admin"
+
+        given().auth().basic(adminId, "admin")
+                .put("api/cards/$id")
+                .then()
+                .statusCode(201)
+        assertEquals(n+1, repository.count())
+
+        given().accept(ContentType.JSON)
+                .get("api/cards/$id")
+                .then()
+                .statusCode(200)
     }
 
     @Test

@@ -40,7 +40,7 @@ class RestIT {
                 .withLogConsumer("cards_0") { print("[CARD_0] " + it.utf8String) }
                 .withLogConsumer("cards_1") { print("[CARD_1] " + it.utf8String) }
                 .withLogConsumer("user-collections") { print("[USER_COLLECTIONS] " + it.utf8String) }
-//                .withLogConsumer("scores") { print("[SCORES] " + it.utf8String) }
+//                .withLogConsumer("trips") { print("[SCORES] " + it.utf8String) }
                 .withLocalCompose(true)
 
 

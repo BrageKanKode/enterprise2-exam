@@ -83,9 +83,9 @@ services:
       - auth
       - rabbitmq
 
-#  scores:
+#  trips:
 #    build:
-#      context: ./scores
+#      context: ./trips
 #      dockerfile: Dockerfile
 #    depends_on:
 #      - api-gateway

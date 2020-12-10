@@ -2,6 +2,7 @@ package trips
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.http.HttpMethod
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
@@ -26,7 +27,7 @@ class WebSecurityConfig: WebSecurityConfigurerAdapter() {
                 .antMatchers("/api/cards/collection_v0_002").permitAll()
                 .antMatchers("/api/cards/collection_v0_003").permitAll()
                 .antMatchers("/api/cards/collection_v1_000").permitAll()
-                .antMatchers("/api/cards/{tripId}").access("hasRole('ADMIN')")
+                .antMatchers(HttpMethod.PUT,"/api/cards/{tripId}").access("hasRole('ADMIN')")
                 .and()
                 .csrf().disable()
                 .sessionManagement()
