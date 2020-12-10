@@ -19,9 +19,9 @@ import trips.dto.TripDto
 import java.net.URI
 import java.util.concurrent.TimeUnit
 
-@Api(value = "/api/cards", description = "Operation on the cards existing in the game")
+@Api(value = "/api/trips", description = "Operation on the trips existing")
 @RequestMapping(
-        path = ["/api/cards"],
+        path = ["/api/trips"],
         produces = [(MediaType.APPLICATION_JSON_VALUE)]
 )
 @RestController
@@ -35,7 +35,7 @@ class RestApi (
     }
 
 
-    @ApiOperation("Return info on all cards in the game")
+    @ApiOperation("Return info on all trips")
     @GetMapping(
             path = ["/collection_$LATEST"],
             produces = [MediaType.APPLICATION_JSON_VALUE]
@@ -59,11 +59,11 @@ class RestApi (
     fun getOld() : ResponseEntity<Void>{
 
         return ResponseEntity.status(301)
-                .location(URI.create("/api/cards/collection_$LATEST"))
+                .location(URI.create("/api/trips/collection_$LATEST"))
                 .build()
     }
 
-    @ApiOperation("Retrieve the current score statistics for the given player")
+    @ApiOperation("Retrieve the current trip info for the given player")
     @GetMapping(path = ["/{tripId}"])
     fun getTripInfo(
             @PathVariable("tripId") tripId: String
@@ -83,11 +83,11 @@ class RestApi (
             @PathVariable("tripId") tripId: String
     ): ResponseEntity<WrappedResponse<Void>> {
         val ok = tripsService.registerNewTrip(tripId)
-        return if (!ok) RestResponseFactory.userFailure("User $tripId already exist")
+        return if (!ok) RestResponseFactory.userFailure("Trip $tripId already exist")
         else RestResponseFactory.noPayload(201)
     }
 
-    @ApiOperation("Return an iterable page of leaderboard results, starting from the top player")
+    @ApiOperation("Return an iterable page of trips, starting from the highest price")
     @GetMapping
     fun getAll(
             @ApiParam("Id of player in the previous page")
@@ -106,7 +106,7 @@ class RestApi (
 
         if (scores.size == n) {
             val last = scores.last()
-            page.next = "/api/cards?keysetId=${last.tripId}&keysetScore=${last.cost}"
+            page.next = "?keysetId=${last.tripId}&keysetScore=${last.cost}"
         }
 
         return ResponseEntity

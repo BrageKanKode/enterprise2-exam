@@ -71,7 +71,7 @@ class RestIT {
                 .pollInterval(Duration.ofSeconds(10))
                 .ignoreExceptions()
                 .until {
-                    given().get("/api/cards/collection_v1_000")
+                    given().get("/api/trips/collection_v1_000")
                             .then()
                             .statusCode(200)
                             .body("data.trips.size", greaterThan(10))
@@ -80,13 +80,13 @@ class RestIT {
     }
 
     @Test
-    fun testGetScores() {
+    fun testGetTrips() {
         Awaitility.await().atMost(120, TimeUnit.SECONDS)
                 .pollInterval(Duration.ofSeconds(10))
                 .ignoreExceptions()
                 .until {
                     given().accept(ContentType.JSON)
-                            .get("/api/cards")
+                            .get("/api/trips")
                             .then()
                             .statusCode(200)
                             .body("data.list.size()", greaterThan(0))
@@ -155,7 +155,7 @@ class RestIT {
                             .then()
                             .statusCode(401)
 
-                    given().get("/api/cards/$id")
+                    given().get("/api/trips/$id")
                             .then()
                             .statusCode(404)
 
@@ -189,7 +189,7 @@ class RestIT {
                                         .then()
                                         .statusCode(200)
 
-                                given().get("/api/cards/$id")
+                                given().get("/api/trips/$id")
                                         .then()
                                         .statusCode(200)
                                         .body("data.cost", equalTo(0))

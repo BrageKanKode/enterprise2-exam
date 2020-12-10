@@ -19,11 +19,7 @@ spring:
         - id: Trips
           uri: lb://trips-service
           predicates:
-            - Path=/api/cards/**
-#        - id: Scores
-#          uri: lb://scores-service
-#          predicates:
-#            - Path=/api/scores/**
+            - Path=/api/trips/**
         - id: User-Collections
           uri: lb://user-collections-service
           predicates:

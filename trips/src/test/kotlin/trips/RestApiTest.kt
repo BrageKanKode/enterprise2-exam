@@ -35,13 +35,14 @@ internal class RestApiTest{
     fun init(){
         RestAssured.baseURI = "http://localhost"
         RestAssured.port = port
+        RestAssured.basePath = "/api/trips"
         RestAssured.enableLoggingOfRequestAndResponseIfValidationFails()
     }
 
     @Test
     fun testGetCollection(){
 
-        given().get("/api/cards/collection_$LATEST")
+        given().get("/collection_$LATEST")
                 .then()
                 .statusCode(200)
                 .body("data.trips.size", greaterThan(10))
@@ -51,7 +52,7 @@ internal class RestApiTest{
     @Test
     fun testGetCollectionOldVersion(){
 
-        given().get("/api/cards/collection_v0_002")
+        given().get("/collection_v0_002")
                 .then()
                 .statusCode(200)
                 .body("data.trips.size", greaterThan(10))
@@ -63,7 +64,7 @@ internal class RestApiTest{
     fun testGetPage() {
 
         given().accept(ContentType.JSON)
-                .get("/api/cards")
+                .get("/")
                 .then()
                 .statusCode(200)
                 .body("data.list.size()", CoreMatchers.equalTo(page))
@@ -75,7 +76,7 @@ internal class RestApiTest{
         val id = "admin"
         val tripId = "Bar003"
         given().auth().basic(id, "admin")
-                .put("api/cards/$tripId")
+                .put("/$tripId")
                 .then()
                 .statusCode(201)
         assertEquals(n+1, repository.count())
@@ -87,7 +88,7 @@ internal class RestApiTest{
         val id = "foo"
         val tripId = "Bar003"
         given().auth().basic(id, "123")
-                .put("api/cards/$tripId")
+                .put("/$tripId")
                 .then()
                 .statusCode(403)
         assertEquals(n, repository.count())
@@ -96,17 +97,17 @@ internal class RestApiTest{
     @Test
     fun testGetTripInfo() {
         val n = repository.count()
-        val id = "Bar001"
+        val id = "Bar004"
         val adminId = "admin"
 
         given().auth().basic(adminId, "admin")
-                .put("api/cards/$id")
+                .put("/$id")
                 .then()
                 .statusCode(201)
         assertEquals(n+1, repository.count())
 
         given().accept(ContentType.JSON)
-                .get("api/cards/$id")
+                .get("/$id")
                 .then()
                 .statusCode(200)
     }
@@ -117,7 +118,7 @@ internal class RestApiTest{
         val read = mutableSetOf<String>()
 
         var page = given().accept(ContentType.JSON)
-                .get("/api/cards")
+                .get("/")
                 .then()
                 .statusCode(200)
                 .body("data.list.size()", CoreMatchers.equalTo(page))
