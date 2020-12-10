@@ -70,6 +70,30 @@ internal class RestApiTest{
     }
 
     @Test
+    fun testCreatePage() {
+        val n = repository.count()
+        val id = "admin"
+        val tripId = "Bar001"
+        given().auth().basic(id, "admin")
+                .put("api/cards/$tripId")
+                .then()
+                .statusCode(201)
+        assertEquals(n+1, repository.count())
+    }
+
+    @Test
+    fun testCreatePageFail() {
+        val n = repository.count()
+        val id = "foo"
+        val tripId = "Bar001"
+        given().auth().basic(id, "123")
+                .put("api/cards/$tripId")
+                .then()
+                .statusCode(403)
+        assertEquals(n, repository.count())
+    }
+
+    @Test
     fun testAllPages(){
 
         val read = mutableSetOf<String>()
