@@ -93,8 +93,36 @@ internal class RestApiTest{
     fun testCreatePageFail() {
         val n = repository.count()
         val id = "foo"
-        val tripId = "Bar003"
+        val tripId = "Bar004"
+        val place = "Bosnia"
+
         given().auth().basic(id, "123")
+                .contentType(ContentType.JSON)
+                .body(
+                        """
+                            {"tripId": "$tripId", "place": "$place", "duration": 3, "cost": 100}
+                        """.trimIndent()
+                )
+                .put("/$tripId")
+                .then()
+                .statusCode(403)
+        assertEquals(n, repository.count())
+    }
+
+    @Test
+    fun testAlterTripCost() {
+        val n = repository.count()
+        val id = "foo"
+        val tripId = "Bar005"
+        val place = "Bosnia"
+
+        given().auth().basic(id, "123")
+                .contentType(ContentType.JSON)
+                .body(
+                        """
+                            {"tripId": "$tripId", "place": "$place", "duration": 3, "cost": 100}
+                        """.trimIndent()
+                )
                 .put("/$tripId")
                 .then()
                 .statusCode(403)
@@ -104,17 +132,24 @@ internal class RestApiTest{
     @Test
     fun testGetTripInfo() {
         val n = repository.count()
-        val id = "Bar004"
-        val adminId = "admin"
+        val tripId = "Bar006"
+        val place = "Bosnia"
+        val id = "admin"
 
-        given().auth().basic(adminId, "admin")
-                .put("/$id")
+        given().auth().basic(id, id)
+                .contentType(ContentType.JSON)
+                .body(
+                        """
+                            {"tripId": "$tripId", "place": "$place", "duration": 3, "cost": 100}
+                        """.trimIndent()
+                )
+                .put("/$tripId")
                 .then()
                 .statusCode(201)
         assertEquals(n+1, repository.count())
 
         given().accept(ContentType.JSON)
-                .get("/$id")
+                .get("/$tripId")
                 .then()
                 .statusCode(200)
     }

@@ -8,7 +8,7 @@ enum class Command {
     ALTER_PEOPLE
 }
 
-data class PatchUserDto(
+data class PatchTripDto(
 
         @get:ApiModelProperty("Command to execute on a user's collection")
         var command: Command? = null,

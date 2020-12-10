@@ -24,4 +24,4 @@ spring:
       port: 8500
       discovery:
         instanceId: ${spring.application.name}:${random.value}
-tripsServiceAddress: "trips-service:8080"
+#tripsServiceAddress: "trips-service:8080"

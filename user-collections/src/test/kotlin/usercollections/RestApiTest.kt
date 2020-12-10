@@ -24,7 +24,7 @@ import rest.WrappedResponse
 import usercollections.db.UserRepository
 import usercollections.db.UserService
 import usercollections.dto.Command
-import usercollections.dto.PatchUserDto
+import usercollections.dto.PatchTripDto
 import wiremock.com.fasterxml.jackson.databind.ObjectMapper
 import javax.annotation.PostConstruct
 
@@ -58,7 +58,7 @@ internal class RestAPITest {
             val json = ObjectMapper().writeValueAsString(dto)
 
             wiremockServer.stubFor(
-                    WireMock.get(WireMock.urlMatching("/api/cards/collection_.*"))
+                    WireMock.get(WireMock.urlMatching("/api/trips/collection_.*"))
                             .willReturn(WireMock.aResponse()
                                     .withStatus(200)
                                     .withHeader("Content-Type", "application/json; charset=utf-8")
@@ -73,7 +73,7 @@ internal class RestAPITest {
 
         class Initializer : ApplicationContextInitializer<ConfigurableApplicationContext> {
             override fun initialize(configurableApplicationContext: ConfigurableApplicationContext) {
-                TestPropertyValues.of("cardServiceAddress: localhost:${wiremockServer.port()}")
+                TestPropertyValues.of("tripsServiceAddress: localhost:${wiremockServer.port()}")
                         .applyTo(configurableApplicationContext.environment)
             }
         }
@@ -162,7 +162,7 @@ internal class RestAPITest {
 
         given().auth().basic(userId, "123")
                 .contentType(ContentType.JSON)
-                .body(PatchUserDto(Command.BUY_TRIP, cardId, people))
+                .body(PatchTripDto(Command.BUY_TRIP, cardId, people))
                 .patch("/$userId")
                 .then()
                 .statusCode(200)
@@ -183,7 +183,7 @@ internal class RestAPITest {
 
         given().auth().basic(userId, "123")
                 .contentType(ContentType.JSON)
-                .body(PatchUserDto(Command.BUY_TRIP, tripId, people))
+                .body(PatchTripDto(Command.BUY_TRIP, tripId, people))
                 .patch("/$userId")
                 .then()
                 .statusCode(200)
@@ -198,7 +198,7 @@ internal class RestAPITest {
         tripId = between.ownedTrips[0].tripId!!
         given().auth().basic(userId, "123")
                 .contentType(ContentType.JSON)
-                .body(PatchUserDto(Command.CANCEL_TRIP, tripId))
+                .body(PatchTripDto(Command.CANCEL_TRIP, tripId))
                 .patch("/$userId")
                 .then()
                 .statusCode(200)
@@ -219,7 +219,7 @@ internal class RestAPITest {
 
         given().auth().basic(userId, "123")
                 .contentType(ContentType.JSON)
-                .body(PatchUserDto(Command.BUY_TRIP, tripId, people))
+                .body(PatchTripDto(Command.BUY_TRIP, tripId, people))
                 .patch("/$userId")
                 .then()
                 .statusCode(200)
@@ -234,7 +234,7 @@ internal class RestAPITest {
 
         given().auth().basic(userId, "123")
                 .contentType(ContentType.JSON)
-                .body(PatchUserDto(Command.ALTER_PEOPLE, tripId, people))
+                .body(PatchTripDto(Command.ALTER_PEOPLE, tripId, people))
                 .patch("/$userId")
                 .then()
                 .statusCode(200)

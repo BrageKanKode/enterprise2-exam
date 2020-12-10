@@ -27,10 +27,6 @@ class UserService(
         private val tripService: TripService
 ) {
 
-    companion object{
-        const val CARDS_PER_PACK = 5
-    }
-
     fun findByIdEager(userId: String) : User?{
 
         val user = userRepository.findById(userId).orElse(null)

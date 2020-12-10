@@ -1,14 +1,22 @@
 package trips.db
 
+import org.springframework.data.jpa.repository.Lock
+import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
+import org.springframework.data.repository.query.Param
 import org.springframework.stereotype.Repository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import javax.persistence.EntityManager
+import javax.persistence.LockModeType
 import javax.persistence.TypedQuery
 
 @Repository
-interface UserTripsRepository : CrudRepository<Trips, String>
+interface UserTripsRepository : CrudRepository<Trips, String> {
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Query("select u from Trips u where u.tripId = :id")
+    fun lockedFind(@Param("id") tripsId: String) : Trips?
+}
 
 @Service
 @Transactional
@@ -16,6 +24,11 @@ class TripsService(
         val repository: UserTripsRepository,
         val em: EntityManager
 ) {
+
+    fun findByIdEager(tripId: String): Trips? {
+
+        return repository.findById(tripId).orElse(null)
+    }
 
     fun registerNewTrip(tripId: String, place: String, duration: Int, cost: Int) : Boolean{
 
@@ -28,13 +41,23 @@ class TripsService(
         return true
     }
 
-    fun alterTripPlace(tripId: String) {
+    private fun validateTrip(tripId: String) {
+        if(!repository.existsById(tripId)){
+            throw java.lang.IllegalArgumentException("Trip $tripId does not exist")
+        }
+    }
 
+    fun alterTripPlace(tripId: String) {
+        validateTrip(tripId)
     }
     fun alterTripDuration(tripId: String) {
-
+        validateTrip(tripId)
     }
-    fun alterTripCost(tripId: String) {
+    fun alterTripCost(tripId: String, cost: Int) {
+        validateTrip(tripId)
+
+        val trip = repository.lockedFind(tripId)
+        trip.apply { this!!.cost = cost }
 
     }
 

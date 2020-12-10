@@ -32,6 +32,24 @@ internal class TripsServiceTest{
     }
 
     @Test
+    fun testAlterTripCost(){
+        val tripId = "Bar002"
+        val place = "Bosnia"
+
+        service.registerNewTrip(tripId, place, 3, 100)
+
+
+        val before = repository.findById(tripId).get()
+
+        service.alterTripCost(tripId, 50)
+
+
+        val after = service.findByIdEager(tripId)!!
+        assertTrue(after.cost < before.cost)
+        assertEquals(50, after.cost)
+    }
+
+    @Test
     fun testPage(){
 
         val n = 5

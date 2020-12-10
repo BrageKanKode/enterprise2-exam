@@ -29,8 +29,8 @@ class TripService(
 
     protected var collection: Collection? = null
 
-    @Value("\${cardServiceAddress}")
-    private lateinit var tripServiceAddress: String
+    @Value("\${tripsServiceAddress}")
+    private lateinit var tripsServiceAddress: String
 
     val tripCollection : List<Trip>
         get() = collection?.trips ?: listOf()
@@ -59,7 +59,7 @@ class TripService(
 
         val version = "v1_000"
         val uri = UriComponentsBuilder
-                .fromUriString("http://${tripServiceAddress.trim()}/api/cards/collection_$version")
+                .fromUriString("http://${tripsServiceAddress.trim()}/api/trips/collection_$version")
                 .build().toUri()
 
         val response = cb.run(
@@ -85,7 +85,7 @@ class TripService(
         try {
             collection = Collection(response.body.data!!)
         } catch (e: Exception) {
-            log.error("Failed to parse card collection info: ${e.message}")
+            log.error("Failed to parse trip collection info: ${e.message}")
         }
     }
 

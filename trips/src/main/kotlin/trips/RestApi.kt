@@ -14,8 +14,10 @@ import trips.db.Trips
 import trips.db.UserTripsRepository
 import trips.db.TripsService
 import trips.dto.CollectionDto
+import trips.dto.Command
+import trips.dto.PatchTripsDto
 import trips.dto.TripDto
-//import trips.dto.TripsDto
+import java.lang.IllegalArgumentException
 import java.net.URI
 import java.util.concurrent.TimeUnit
 
@@ -61,6 +63,38 @@ class RestApi (
         return ResponseEntity.status(301)
                 .location(URI.create("/api/trips/collection_$LATEST"))
                 .build()
+    }
+
+    @ApiOperation("Edit existing value for trip")
+    @PatchMapping(
+            path = ["/{tripId}"],
+            consumes = [(MediaType.APPLICATION_JSON_VALUE)]
+    )
+    fun alterTripInfo(
+            @PathVariable("tripId") tripId: String,
+            @RequestBody dto: PatchTripsDto
+    ) : ResponseEntity<WrappedResponse<Void>> {
+
+        if(dto.command == null){
+            return RestResponseFactory.userFailure("Missing command")
+        }
+        val tripId = dto.tripId
+                ?: return RestResponseFactory.userFailure("Missing trip id")
+
+        if(dto.command == Command.ALTER_TRIP_COST ){
+            val cost = dto.cost
+                    ?: return RestResponseFactory.userFailure("Missing cost of trip")
+            try{
+                tripsService.alterTripCost(tripId, cost)
+            } catch (e: IllegalArgumentException){
+                return RestResponseFactory.userFailure(e.message ?: "Failed to change cost of trip $tripId")
+            }
+            return RestResponseFactory.noPayload(201)
+        }
+
+
+
+        return RestResponseFactory.userFailure("Unrecognized command: ${dto.command}")
     }
 
     @ApiOperation("Retrieve the current trip info for the given player")

@@ -10,7 +10,7 @@ import rest.WrappedResponse
 import usercollections.db.UserService
 import usercollections.dto.Command
 import usercollections.dto.PatchResultDto
-import usercollections.dto.PatchUserDto
+import usercollections.dto.PatchTripDto
 import usercollections.dto.UserDto
 import java.lang.IllegalArgumentException
 
@@ -65,7 +65,7 @@ class RestAPI(
     )
     fun patchUser(
             @PathVariable("userId") userId: String,
-            @RequestBody dto: PatchUserDto
+            @RequestBody dto: PatchTripDto
     ): ResponseEntity<WrappedResponse<PatchResultDto>> {
 
         if(dto.command == null){
