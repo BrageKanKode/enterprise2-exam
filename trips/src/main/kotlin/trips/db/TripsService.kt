@@ -17,15 +17,25 @@ class TripsService(
         val em: EntityManager
 ) {
 
-    fun registerNewTrip(tripId: String) : Boolean{
+    fun registerNewTrip(tripId: String, place: String, duration: Int, cost: Int) : Boolean{
 
         if(repository.existsById(tripId)){
             return false
         }
 
-        val stats = Trips(tripId, "0", 0, 0)
+        val stats = Trips(tripId = tripId, place = place, duration = duration, cost = cost)
         repository.save(stats)
         return true
+    }
+
+    fun alterTripPlace(tripId: String) {
+
+    }
+    fun alterTripDuration(tripId: String) {
+
+    }
+    fun alterTripCost(tripId: String) {
+
     }
 
     fun getNextPage(size: Int, keysetId: String? = null, keysetScore: Int? = null): List<Trips>{

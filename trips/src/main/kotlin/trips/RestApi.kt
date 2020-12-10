@@ -78,11 +78,20 @@ class RestApi (
     }
 
     @ApiOperation("Create default info for a new player")
-    @PutMapping(path = ["/{tripId}"])
+    @PutMapping(
+            path = ["/{tripId}"],
+            consumes = [(MediaType.APPLICATION_JSON_VALUE)]
+    )
     fun createTrip(
-            @PathVariable("tripId") tripId: String
+            @PathVariable("tripId") tripId: String,
+            @RequestBody dto: TripDto
     ): ResponseEntity<WrappedResponse<Void>> {
-        val ok = tripsService.registerNewTrip(tripId)
+
+        if (dto.tripId == null || dto.place == null || dto.duration == null || dto.cost == null) {
+            return RestResponseFactory.userFailure("Missing parameters to create trip $tripId")
+        }
+
+        val ok = tripsService.registerNewTrip(tripId, dto.place!!, dto.duration!!, dto.cost!!)
         return if (!ok) RestResponseFactory.userFailure("Trip $tripId already exist")
         else RestResponseFactory.noPayload(201)
     }

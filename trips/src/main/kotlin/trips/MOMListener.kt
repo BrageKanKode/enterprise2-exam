@@ -16,8 +16,8 @@ class MOMListener(
 
 
     @RabbitListener(queues = ["#{queue.name}"])
-    fun receiveFromAMQP(tripId: String) {
-        val ok = statsService.registerNewTrip(tripId)
+    fun receiveFromAMQP(tripId: String, place: String, duration: Int, cost: Int) {
+        val ok = statsService.registerNewTrip(tripId, place, duration, cost)
         if(ok){
             log.info("Registered new trip via MOM: $tripId")
         }

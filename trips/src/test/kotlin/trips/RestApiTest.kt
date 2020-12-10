@@ -75,7 +75,14 @@ internal class RestApiTest{
         val n = repository.count()
         val id = "admin"
         val tripId = "Bar003"
+        val place = "Bosnia"
         given().auth().basic(id, "admin")
+                .contentType(ContentType.JSON)
+                .body(
+                        """
+                            {"tripId": "$tripId", "place": "$place", "duration": 3, "cost": 100}
+                        """.trimIndent()
+                )
                 .put("/$tripId")
                 .then()
                 .statusCode(201)

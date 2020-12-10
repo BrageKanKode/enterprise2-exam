@@ -189,10 +189,21 @@ class RestIT {
                                         .then()
                                         .statusCode(200)
 
-                                given().get("/api/trips/$id")
-                                        .then()
-                                        .statusCode(200)
-                                        .body("data.cost", equalTo(0))
+//                                given().auth().basic("admin", "admin")
+//                                        .contentType(ContentType.JSON)
+//                                        .body(
+//                                                """
+//                                                    {"tripId": "$id", "place": "Bosnia", "duration": 3, "cost": 100}
+//                                                """.trimIndent()
+//                                        )
+//                                        .put("/$id")
+//                                        .then()
+//                                        .statusCode(201)
+//
+//                                given().get("/api/trips/$id")
+//                                        .then()
+//                                        .statusCode(200)
+//                                        .body("data.cost", equalTo(0))
 
                                 true
                             }
