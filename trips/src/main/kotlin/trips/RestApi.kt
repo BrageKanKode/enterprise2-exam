@@ -91,6 +91,26 @@ class RestApi (
             }
             return RestResponseFactory.noPayload(201)
         }
+        if(dto.command == Command.ALTER_TRIP_PLACE ){
+            val place = dto.place
+                    ?: return RestResponseFactory.userFailure("Missing place of trip")
+            try{
+                tripsService.alterTripPlace(tripId, place)
+            } catch (e: IllegalArgumentException){
+                return RestResponseFactory.userFailure(e.message ?: "Failed to change place of trip $tripId")
+            }
+            return RestResponseFactory.noPayload(201)
+        }
+        if(dto.command == Command.ALTER_TRIP_DURATION ){
+            val duration = dto.duration
+                    ?: return RestResponseFactory.userFailure("Missing duration of trip")
+            try{
+                tripsService.alterTripDuration(tripId, duration)
+            } catch (e: IllegalArgumentException){
+                return RestResponseFactory.userFailure(e.message ?: "Failed to change duration of trip $tripId")
+            }
+            return RestResponseFactory.noPayload(201)
+        }
 
 
 

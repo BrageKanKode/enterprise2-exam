@@ -16,7 +16,10 @@ import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import rest.PageDto
 import trips.RestApi.Companion.LATEST
+import trips.db.TripsService
 import trips.db.UserTripsRepository
+import trips.dto.Command
+import trips.dto.PatchTripsDto
 import javax.annotation.PostConstruct
 
 @ActiveProfiles("FakeData, test")
@@ -30,6 +33,8 @@ internal class RestApiTest{
 
     @Autowired
     private lateinit var repository: UserTripsRepository
+    @Autowired
+    private lateinit var service: TripsService
 
     @PostConstruct
     fun init(){
@@ -112,21 +117,131 @@ internal class RestApiTest{
     @Test
     fun testAlterTripCost() {
         val n = repository.count()
-        val id = "foo"
-        val tripId = "Bar005"
+        val id = "admin"
+        val tripId = "BarAlterCostRest003"
         val place = "Bosnia"
-
-        given().auth().basic(id, "123")
+        val cost = 100
+        given().auth().basic(id, "admin")
                 .contentType(ContentType.JSON)
                 .body(
                         """
-                            {"tripId": "$tripId", "place": "$place", "duration": 3, "cost": 100}
+                            {"tripId": "$tripId", "place": "$place", "duration": 3, "cost": $cost}
                         """.trimIndent()
                 )
                 .put("/$tripId")
                 .then()
+                .statusCode(201)
+        assertEquals(n+1, repository.count())
+
+        given().auth().basic(id, id)
+                .contentType(ContentType.JSON)
+                .body(PatchTripsDto(Command.ALTER_TRIP_COST, tripId, place, 3, 50))
+                .patch("/$tripId")
+                .then()
+                .statusCode(201)
+
+        val trip = service.findByIdEager(tripId)!!
+        assertEquals(50, trip.cost)
+        assertTrue(trip.cost < cost)
+
+
+    }
+
+    @Test
+    fun testAlterTripPlace() {
+        val n = repository.count()
+        val id = "admin"
+        val tripId = "BarAlterPlaceRest003"
+        val place = "Bosnia"
+        val duration = 3
+        val cost = 100
+
+        given().auth().basic(id, "admin")
+                .contentType(ContentType.JSON)
+                .body(
+                        """
+                            {"tripId": "$tripId", "place": "$place", "duration": $duration, "cost": $cost}
+                        """.trimIndent()
+                )
+                .put("/$tripId")
+                .then()
+                .statusCode(201)
+        assertEquals(n+1, repository.count())
+
+        given().auth().basic(id, id)
+                .contentType(ContentType.JSON)
+                .body(PatchTripsDto(Command.ALTER_TRIP_PLACE, tripId, "Oslo", 3, 100))
+                .patch("/$tripId")
+                .then()
+                .statusCode(201)
+
+        val trip = service.findByIdEager(tripId)!!
+        assertEquals("Oslo", trip.place)
+        assertTrue(trip.place != place)
+    }
+
+    @Test
+    fun testAlterTripDuration() {
+        val n = repository.count()
+        val id = "admin"
+        val tripId = "BarAlterDurationRest003"
+        val place = "Bosnia"
+        val duration = 3
+        val cost = 100
+        given().auth().basic(id, "admin")
+                .contentType(ContentType.JSON)
+                .body(
+                        """
+                            {"tripId": "$tripId", "place": "$place", "duration": $duration, "cost": $cost}
+                        """.trimIndent()
+                )
+                .put("/$tripId")
+                .then()
+                .statusCode(201)
+        assertEquals(n+1, repository.count())
+
+        given().auth().basic(id, id)
+                .contentType(ContentType.JSON)
+                .body(PatchTripsDto(Command.ALTER_TRIP_DURATION, tripId, place, 5, 50))
+                .patch("/$tripId")
+                .then()
+                .statusCode(201)
+
+        val trip = service.findByIdEager(tripId)!!
+        assertEquals(5, trip.duration)
+        assertTrue(trip.duration > duration)
+    }
+
+    @Test
+    fun testAlterTripFail() {
+        val n = repository.count()
+        val id = "admin"
+        val tripId = "BarAlterFailRest003"
+        val place = "Bosnia"
+        val duration = 3
+        val cost = 100
+        given().auth().basic(id, "admin")
+                .contentType(ContentType.JSON)
+                .body(
+                        """
+                            {"tripId": "$tripId", "place": "$place", "duration": $duration, "cost": $cost}
+                        """.trimIndent()
+                )
+                .put("/$tripId")
+                .then()
+                .statusCode(201)
+        assertEquals(n+1, repository.count())
+
+        given().auth().basic("foo", "123")
+                .contentType(ContentType.JSON)
+                .body(PatchTripsDto(Command.ALTER_TRIP_DURATION, tripId, place, 5, 50))
+                .patch("/$tripId")
+                .then()
                 .statusCode(403)
-        assertEquals(n, repository.count())
+
+        val trip = service.findByIdEager(tripId)!!
+        assertEquals(3, trip.duration)
+        assertTrue(trip.duration == duration)
     }
 
     @Test

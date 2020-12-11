@@ -38,15 +38,43 @@ internal class TripsServiceTest{
 
         service.registerNewTrip(tripId, place, 3, 100)
 
-
         val before = repository.findById(tripId).get()
 
         service.alterTripCost(tripId, 50)
 
-
         val after = service.findByIdEager(tripId)!!
         assertTrue(after.cost < before.cost)
         assertEquals(50, after.cost)
+    }
+    @Test
+    fun testAlterTripPlace(){
+        val tripId = "BarPlace001"
+        val place = "Bosnia"
+
+        service.registerNewTrip(tripId, place, 3, 100)
+
+        val before = repository.findById(tripId).get()
+
+        service.alterTripPlace(tripId, "Oslo")
+
+        val after = service.findByIdEager(tripId)!!
+        assertFalse(after.place == before.place)
+        assertEquals("Oslo", after.place)
+    }
+    @Test
+    fun testAlterTripDuration(){
+        val tripId = "BarDuration002"
+        val place = "Bosnia"
+
+        service.registerNewTrip(tripId, place, 3, 100)
+
+        val before = repository.findById(tripId).get()
+
+        service.alterTripDuration(tripId, 5)
+
+        val after = service.findByIdEager(tripId)!!
+        assertTrue(after.duration > before.duration)
+        assertEquals(5, after.duration)
     }
 
     @Test

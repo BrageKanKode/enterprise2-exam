@@ -27,6 +27,8 @@ class WebSecurityConfig: WebSecurityConfigurerAdapter() {
                 .antMatchers("/api/trips/collection_v0_003").permitAll()
                 .antMatchers("/api/trips/collection_v1_000").permitAll()
                 .antMatchers(HttpMethod.PUT,"/api/trips/{tripId}").access("hasRole('ADMIN')")
+                .antMatchers(HttpMethod.PATCH,"/api/trips/{tripId}").access("hasRole('ADMIN')")
+                .antMatchers(HttpMethod.GET,"/api/trips/{tripId}").permitAll()
                 .and()
                 .csrf().disable()
                 .sessionManagement()

@@ -47,11 +47,15 @@ class TripsService(
         }
     }
 
-    fun alterTripPlace(tripId: String) {
+    fun alterTripPlace(tripId: String, place: String) {
         validateTrip(tripId)
+        val trip = repository.lockedFind(tripId)
+        trip.apply { this!!.place = place }
     }
-    fun alterTripDuration(tripId: String) {
+    fun alterTripDuration(tripId: String, duration: Int) {
         validateTrip(tripId)
+        val trip = repository.lockedFind(tripId)
+        trip.apply { this!!.duration = duration }
     }
     fun alterTripCost(tripId: String, cost: Int) {
         validateTrip(tripId)
