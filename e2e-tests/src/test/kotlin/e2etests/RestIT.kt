@@ -18,7 +18,7 @@ import java.io.File
 import java.time.Duration
 import java.util.concurrent.TimeUnit
 
-@Disabled
+//@Disabled
 @Testcontainers
 class RestIT {
 

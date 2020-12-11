@@ -1,5 +1,5 @@
 package trips.db
-
+//https://github.com/arcuri82/testing_security_development_enterprise_systems/blob/master/advanced/exercise-solutions/card-game/part-10/scores/src/test/kotlin/org/tsdes/advanced/exercises/cardgame/scores/db/UserStatsServiceTest.kt
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
