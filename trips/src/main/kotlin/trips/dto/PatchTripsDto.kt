@@ -5,7 +5,9 @@ import io.swagger.annotations.ApiModelProperty
 enum class Command {
     DELETE_TRIP,
     CREATE_TRIP,
-    ALTER_TRIP_COST
+    ALTER_TRIP_COST,
+    ALTER_TRIP_PLACE,
+    ALTER_TRIP_DURATION
 }
 
 data class PatchTripsDto(
