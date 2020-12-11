@@ -5,8 +5,11 @@ spring:
     add-mappings: false
   application:
     name: trips-service
+  redis:
+    host: redis
+    port: 6379
   session:
-    store-type: none
+    store-type: redis
   rabbitmq:
     host: rabbitmq
   datasource:
