@@ -53,16 +53,6 @@ internal class RestApiTest{
                 .body("data.trips.size", greaterThan(10))
     }
 
-
-    @Test
-    fun testGetCollectionOldVersion(){
-
-        given().get("/collection_v0_002")
-                .then()
-                .statusCode(200)
-                .body("data.trips.size", greaterThan(10))
-    }
-
     val page : Int = 10
 
     @Test

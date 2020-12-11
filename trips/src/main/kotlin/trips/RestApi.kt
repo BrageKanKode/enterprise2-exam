@@ -51,19 +51,6 @@ class RestApi (
                 .body(WrappedResponse(200, collection).validated())
     }
 
-    @ApiOperation("Old-version endpoints. Will automatically redirect to most recent version")
-    @GetMapping(path = [
-        "/collection_v0_001",
-        "/collection_v0_002",
-        "/collection_v0_003"
-    ])
-    fun getOld() : ResponseEntity<Void>{
-
-        return ResponseEntity.status(301)
-                .location(URI.create("/api/trips/collection_$LATEST"))
-                .build()
-    }
-
     @ApiOperation("Edit existing value for trip")
     @PatchMapping(
             path = ["/{tripId}"],
