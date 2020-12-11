@@ -58,7 +58,7 @@ class UserService(
 
     private fun validateTrip(tripId: String) {
         if (!tripService.isInitialized()) {
-            throw IllegalStateException("Card service is not initialized")
+            throw IllegalStateException("Trip service is not initialized")
         }
 
         if (!tripService.tripCollection.any { it.tripId == tripId }) {
@@ -134,7 +134,7 @@ class UserService(
                 }.also { user.ownedTrips.add(it) }
     }
 
-    fun millCard(userId: String, tripId: String) {
+    fun sellTrip(userId: String, tripId: String) {
         validate(userId, tripId)
 
         val user = userRepository.lockedFind(userId)!!
@@ -146,7 +146,7 @@ class UserService(
 
         copy.numberOfCopies--
 
-        val millValue = tripService.millValue(tripId)
+        val millValue = tripService.sellValue(tripId)
         user.coins += millValue
     }
 }

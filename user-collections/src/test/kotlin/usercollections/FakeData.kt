@@ -1,7 +1,6 @@
 package usercollections
 
 import trips.dto.CollectionDto
-import trips.dto.Rarity.*
 import trips.dto.TripDto
 
 object FakeData {

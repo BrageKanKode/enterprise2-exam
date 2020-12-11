@@ -37,10 +37,9 @@ class RestIT {
         val env = KDockerComposeContainer("enterprise2-exam", File("../docker-compose.yml"))
                 .withExposedService("discovery", 8500,
                         Wait.forListeningPort().withStartupTimeout(Duration.ofSeconds(240)))
-                .withLogConsumer("cards_0") { print("[CARD_0] " + it.utf8String) }
-                .withLogConsumer("cards_1") { print("[CARD_1] " + it.utf8String) }
+                .withLogConsumer("trips_0") { print("[TRIP_0] " + it.utf8String) }
+                .withLogConsumer("trips_1") { print("[TRIP_1] " + it.utf8String) }
                 .withLogConsumer("user-collections") { print("[USER_COLLECTIONS] " + it.utf8String) }
-//                .withLogConsumer("trips") { print("[SCORES] " + it.utf8String) }
                 .withLocalCompose(true)
 
 

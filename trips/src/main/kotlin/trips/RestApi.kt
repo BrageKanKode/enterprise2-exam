@@ -11,9 +11,8 @@ import rest.PageDto
 import rest.RestResponseFactory
 import rest.WrappedResponse
 import trips.db.Trips
-import trips.db.UserTripsRepository
+import trips.db.TripsRepository
 import trips.db.TripsService
-import trips.dto.CollectionDto
 import trips.dto.Command
 import trips.dto.PatchTripsDto
 import trips.dto.TripDto
@@ -28,7 +27,7 @@ import java.util.concurrent.TimeUnit
 )
 @RestController
 class RestApi (
-        private val statsRepository: UserTripsRepository,
+        private val statsRepository: TripsRepository,
         private val tripsService: TripsService
         ) {
 

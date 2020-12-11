@@ -17,7 +17,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 import rest.PageDto
 import trips.RestApi.Companion.LATEST
 import trips.db.TripsService
-import trips.db.UserTripsRepository
+import trips.db.TripsRepository
 import trips.dto.Command
 import trips.dto.PatchTripsDto
 import javax.annotation.PostConstruct
@@ -32,7 +32,7 @@ internal class RestApiTest{
     protected var port = 0
 
     @Autowired
-    private lateinit var repository: UserTripsRepository
+    private lateinit var repository: TripsRepository
     @Autowired
     private lateinit var service: TripsService
 
@@ -81,11 +81,14 @@ internal class RestApiTest{
         val id = "admin"
         val tripId = "Bar003"
         val place = "Bosnia"
+        val duration = 3
+        val cost = 100
+
         given().auth().basic(id, "admin")
                 .contentType(ContentType.JSON)
                 .body(
                         """
-                            {"tripId": "$tripId", "place": "$place", "duration": 3, "cost": 100}
+                            {"tripId": "$tripId", "place": "$place", "duration": $duration, "cost": $cost}
                         """.trimIndent()
                 )
                 .put("/$tripId")
@@ -100,12 +103,14 @@ internal class RestApiTest{
         val id = "foo"
         val tripId = "Bar004"
         val place = "Bosnia"
+        val duration = 3
+        val cost = 100
 
         given().auth().basic(id, "123")
                 .contentType(ContentType.JSON)
                 .body(
                         """
-                            {"tripId": "$tripId", "place": "$place", "duration": 3, "cost": 100}
+                            {"tripId": "$tripId", "place": "$place", "duration": $duration, "cost": $cost}
                         """.trimIndent()
                 )
                 .put("/$tripId")
@@ -120,12 +125,13 @@ internal class RestApiTest{
         val id = "admin"
         val tripId = "BarAlterCostRest003"
         val place = "Bosnia"
+        val duration = 3
         val cost = 100
         given().auth().basic(id, "admin")
                 .contentType(ContentType.JSON)
                 .body(
                         """
-                            {"tripId": "$tripId", "place": "$place", "duration": 3, "cost": $cost}
+                            {"tripId": "$tripId", "place": "$place", "duration": $duration, "cost": $cost}
                         """.trimIndent()
                 )
                 .put("/$tripId")
@@ -302,12 +308,12 @@ internal class RestApiTest{
 
     private fun checkOrder(page: PageDto<Map<String, Object>>) {
         for (i in 0 until page.list.size - 1) {
-            val ascore = page.list[i]["cost"].toString().toInt()
-            val bscore = page.list[i + 1]["cost"].toString().toInt()
+            val atrip = page.list[i]["cost"].toString().toInt()
+            val btrip = page.list[i + 1]["cost"].toString().toInt()
             val aid = page.list[i]["tripId"].toString()
             val bid = page.list[i + 1]["tripId"].toString()
-            assertTrue(ascore >= bscore)
-            if (ascore == bscore) {
+            assertTrue(atrip >= btrip)
+            if (atrip == btrip) {
                 assertTrue(aid > bid)
             }
         }

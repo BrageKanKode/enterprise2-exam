@@ -27,8 +27,8 @@ class Application {
 
     private fun apiInfo(): ApiInfo {
         return ApiInfoBuilder()
-                .title("API for Cards")
-                .description("REST service with info regarding all the cards in the game")
+                .title("API for Trips")
+                .description("REST service with info regarding all the trips")
                 .version("1.0")
                 .build()
     }
@@ -40,7 +40,7 @@ class Application {
 
     @Bean
     fun queue(): Queue {
-        return Queue("user-creation-scores")
+        return Queue("user-creation-trips")
     }
 
     @Bean

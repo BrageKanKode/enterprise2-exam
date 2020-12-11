@@ -17,7 +17,7 @@ internal class TripsServiceTest{
     private lateinit var service: TripsService
 
     @Autowired
-    private lateinit var repository: UserTripsRepository
+    private lateinit var repository: TripsRepository
 
     @Test
     fun testInit(){

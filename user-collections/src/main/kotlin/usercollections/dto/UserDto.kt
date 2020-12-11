@@ -9,6 +9,6 @@ class UserDto (
         @get:ApiModelProperty("The amount of coins owned by the user")
         var coins: Int? = null,
 
-        @get:ApiModelProperty("List of cards owned by the host")
-        var ownedCards: MutableList<TripCopyDto> = mutableListOf()
+        @get:ApiModelProperty("List of trips owned by the host")
+        var ownedTrips: MutableList<TripCopyDto> = mutableListOf()
 )

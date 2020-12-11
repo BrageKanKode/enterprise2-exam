@@ -3,8 +3,6 @@ package trips.dto
 import io.swagger.annotations.ApiModelProperty
 
 enum class Command {
-    DELETE_TRIP,
-    CREATE_TRIP,
     ALTER_TRIP_COST,
     ALTER_TRIP_PLACE,
     ALTER_TRIP_DURATION
@@ -12,10 +10,10 @@ enum class Command {
 
 data class PatchTripsDto(
 
-        @get:ApiModelProperty("Command to execute on a user's collection")
+        @get:ApiModelProperty("Command to execute on a trip")
         var command: Command? = null,
 
-        @get:ApiModelProperty("Optional card id, if the command requires one")
+        @get:ApiModelProperty("Card id, if the command requires one")
         var tripId: String? = null,
 
         @get:ApiModelProperty("Place of the trip, if the command requires one")

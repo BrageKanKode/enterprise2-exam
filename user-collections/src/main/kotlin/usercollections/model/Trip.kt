@@ -1,6 +1,5 @@
 package usercollections.model
 
-import trips.dto.Rarity
 import trips.dto.TripDto
 
 data class Trip(
@@ -9,6 +8,6 @@ data class Trip(
 ){
 
     constructor(dto: TripDto): this(
-            dto.tripId ?: throw IllegalArgumentException("Null cardId"),
-            dto.cost ?: throw IllegalArgumentException("Null rarity"))
+            dto.tripId ?: throw IllegalArgumentException("Null tripId"),
+            dto.cost ?: throw IllegalArgumentException("Null cost"))
 }

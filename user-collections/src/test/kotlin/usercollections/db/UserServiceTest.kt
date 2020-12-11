@@ -21,7 +21,7 @@ import usercollections.model.Collection
 @Profile("UserServiceTest")
 @Primary
 @Service
-class FakeCardService : TripService(RestTemplate(), Resilience4JCircuitBreakerFactory()){
+class FakeTripService : TripService(RestTemplate(), Resilience4JCircuitBreakerFactory()){
 
     override fun fetchData() {
         val dto = FakeData.getCollectionDto()
@@ -63,7 +63,7 @@ internal class UserServiceTest{
     }
 
     @Test
-    fun testBuyCard(){
+    fun testBuyTrip(){
 
         val userId = "foo"
         val tripId = "c00"
@@ -77,7 +77,7 @@ internal class UserServiceTest{
     }
 
     @Test
-    fun testBuyCardFailNotEnoughMoney(){
+    fun testBuyTripFailNotEnoughMoney(){
 
         val userId = "foo"
         val tripId = "c00"
@@ -113,7 +113,7 @@ internal class UserServiceTest{
     }
 
     @Test
-    fun testMillCard(){
+    fun testSellTrip(){
 
         val userId = "foo"
         val tripId = "c00"
@@ -129,7 +129,7 @@ internal class UserServiceTest{
 
         val between = userService.findByIdEager(userId)!!
         val n = between.ownedTrips.sumBy { it.numberOfCopies }
-        userService.millCard(userId, between.ownedTrips[0].tripId!!)
+        userService.sellTrip(userId, between.ownedTrips[0].tripId!!)
 
 
         val after = userService.findByIdEager(userId)!!

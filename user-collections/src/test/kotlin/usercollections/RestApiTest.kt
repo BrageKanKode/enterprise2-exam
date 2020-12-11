@@ -152,23 +152,23 @@ internal class RestAPITest {
     }
 
     @Test
-    fun testBuyCard() {
+    fun testBuyTrip() {
 
         val userId = "foo"
-        val cardId = "c00"
+        val tripId = "c00"
         val people = 1
 
         given().auth().basic(userId, "123").put("/$userId").then().statusCode(201)
 
         given().auth().basic(userId, "123")
                 .contentType(ContentType.JSON)
-                .body(PatchTripDto(Command.BUY_TRIP, cardId, people))
+                .body(PatchTripDto(Command.BUY_TRIP, tripId, people))
                 .patch("/$userId")
                 .then()
                 .statusCode(200)
 
         val user = userService.findByIdEager(userId)!!
-        assertTrue(user.ownedTrips.any { it.tripId == cardId })
+        assertTrue(user.ownedTrips.any { it.tripId == tripId })
     }
 
 
@@ -225,10 +225,7 @@ internal class RestAPITest {
                 .statusCode(200)
 
         val before = userRepository.findById(userId).get()
-        val coins = before.coins
 
-        val between = userService.findByIdEager(userId)!!
-        val n = between.ownedTrips.sumBy { it.numberOfCopies }
 
         people = 1
 
@@ -240,6 +237,6 @@ internal class RestAPITest {
                 .statusCode(200)
 
         val after = userService.findByIdEager(userId)!!
-        assertTrue(after.coins > coins)
+        assertTrue(after.coins > before.coins)
     }
 }

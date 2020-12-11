@@ -9,12 +9,11 @@ import rest.RestResponseFactory
 import rest.WrappedResponse
 import usercollections.db.UserService
 import usercollections.dto.Command
-import usercollections.dto.PatchResultDto
 import usercollections.dto.PatchTripDto
 import usercollections.dto.UserDto
 import java.lang.IllegalArgumentException
 
-@Api(value = "/api/user-collections", description = "Operations on card collections owned by users")
+@Api(value = "/api/user-collections", description = "Operations on trip collections owned by users")
 @RequestMapping(
         path = ["/api/user-collections"],
         produces = [(MediaType.APPLICATION_JSON_VALUE)]
@@ -24,7 +23,7 @@ class RestAPI(
         private val userService: UserService
 ) {
 
-    @ApiOperation("Retrieve card collection information for a specific user")
+    @ApiOperation("Retrieve trip collection information for a specific user")
     @GetMapping(path = ["/{userId}"])
     fun getUserInfo(
             @PathVariable("userId") userId: String
@@ -58,7 +57,7 @@ class RestAPI(
         else RestResponseFactory.noPayload(201)
     }
 
-    @ApiOperation("Execute a command on a user's collection, like for example buying/milling cards")
+    @ApiOperation("Execute a command on a user's collection, like for example buying/selling trips")
     @PatchMapping(
             path = ["/{userId}"],
             consumes = [(MediaType.APPLICATION_JSON_VALUE)]
@@ -66,7 +65,7 @@ class RestAPI(
     fun patchUser(
             @PathVariable("userId") userId: String,
             @RequestBody dto: PatchTripDto
-    ): ResponseEntity<WrappedResponse<PatchResultDto>> {
+    ): ResponseEntity<WrappedResponse<Void>> {
 
         if(dto.command == null){
             return RestResponseFactory.userFailure("Missing command")
@@ -84,16 +83,16 @@ class RestAPI(
             } catch (e: IllegalArgumentException){
                 return RestResponseFactory.userFailure(e.message ?: "Failed to buy trip $tripId")
             }
-            return RestResponseFactory.payload(200, PatchResultDto())
+            return RestResponseFactory.noPayload(200)
         }
 
         if(dto.command == Command.CANCEL_TRIP){
             try{
-                userService.millCard(userId, tripId)
+                userService.sellTrip(userId, tripId)
             } catch (e: IllegalArgumentException){
                 return RestResponseFactory.userFailure(e.message ?: "Failed to cancel trip $tripId")
             }
-            return RestResponseFactory.payload(200, PatchResultDto())
+            return RestResponseFactory.noPayload(200)
         }
         if(dto.command == Command.ALTER_PEOPLE){
             val people = dto.people
@@ -103,7 +102,7 @@ class RestAPI(
             } catch (e: IllegalArgumentException){
                 return RestResponseFactory.userFailure(e.message ?: "Failed to alter People in trip $tripId")
             }
-            return RestResponseFactory.payload(200, PatchResultDto())
+            return RestResponseFactory.noPayload(200)
         }
 
         return RestResponseFactory.userFailure("Unrecognized command: ${dto.command}")

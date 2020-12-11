@@ -12,7 +12,7 @@ import javax.persistence.LockModeType
 import javax.persistence.TypedQuery
 
 @Repository
-interface UserTripsRepository : CrudRepository<Trips, String> {
+interface TripsRepository : CrudRepository<Trips, String> {
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("select u from Trips u where u.tripId = :id")
     fun lockedFind(@Param("id") tripsId: String) : Trips?
@@ -21,7 +21,7 @@ interface UserTripsRepository : CrudRepository<Trips, String> {
 @Service
 @Transactional
 class TripsService(
-        val repository: UserTripsRepository,
+        val repository: TripsRepository,
         val em: EntityManager
 ) {
 

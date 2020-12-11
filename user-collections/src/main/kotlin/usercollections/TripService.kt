@@ -43,7 +43,7 @@ class TripService(
     @PostConstruct
     fun init(){
 
-        cb = circuitBreakerFactory.create("circuitBreakerToCards")
+        cb = circuitBreakerFactory.create("circuitBreakerToTrips")
 
         synchronized(lock){
             if(tripCollection.isNotEmpty()){
@@ -100,7 +100,7 @@ class TripService(
         }
     }
 
-    fun millValue(tripId: String) : Int {
+    fun sellValue(tripId: String) : Int {
         verifyCollection()
         val trip : Trip = tripCollection.find { it.tripId  == tripId} ?:
         throw IllegalArgumentException("Invalid tripId $tripId")

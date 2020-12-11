@@ -8,5 +8,5 @@ object DtoConverter {
     fun transform(trips: Trips) : TripDto =
             trips.run { TripDto(tripId, place, duration, cost)}
 
-    fun transform(scores: Iterable<Trips>) : List<TripDto> = scores.map { transform(it) }
+    fun transform(trips: Iterable<Trips>) : List<TripDto> = trips.map { transform(it) }
 }

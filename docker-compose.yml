@@ -48,7 +48,7 @@ services:
       - postgres-auth
       - rabbitmq
 
-  cards_0:
+  trips_0:
     build:
       context: ./trips
       dockerfile: Dockerfile
@@ -58,7 +58,7 @@ services:
       - postgres-trips
       - rabbitmq
 
-  cards_1:
+  trips_1:
     build:
       context: ./trips
       dockerfile: Dockerfile
