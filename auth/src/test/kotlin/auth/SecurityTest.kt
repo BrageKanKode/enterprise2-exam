@@ -137,8 +137,8 @@ class SecurityTest {
                 .get("/user")
                 .then()
                 .statusCode(200)
-                .body("name", equalTo(name))
-                .body("roles", contains("ROLE_USER"))
+                .body("data.name", equalTo(name))
+                .body("data.roles", contains("ROLE_USER"))
 
 
 
