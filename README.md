@@ -4,6 +4,11 @@
 This exam was difficult, and i really learned a lot. I hope I did not misinterpret the requirements, and believe I solved what i could as it's meant to be 
 solved.
 
+To run this program, you need to run `mvn install -DskipTests`
+
+Then run `docker-compose build`
+then run `docker-compose up`
+
 ##Requirements:
 ###R requirements
 I did R1, R2 and R3. 
